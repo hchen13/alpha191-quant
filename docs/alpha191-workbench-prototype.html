@@ -473,6 +473,133 @@
       gap: 8px;
     }
 
+    .formula-cell {
+      white-space: normal;
+      line-height: 1.45;
+    }
+
+    .formula-cell code,
+    .command-line {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .formula-cell code {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    .meaning-cell {
+      white-space: normal;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .factor-list-table {
+      display: block;
+    }
+
+    .factor-list-table thead {
+      display: none;
+    }
+
+    .factor-list-table tbody {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .factor-list-table tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px 16px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .factor-list-table tr.selected {
+      background: #eaf3fb;
+    }
+
+    .factor-list-table td {
+      display: block;
+      border-bottom: 0;
+      padding: 0;
+      white-space: normal;
+      vertical-align: top;
+    }
+
+    .factor-list-table tr.selected td {
+      background: transparent;
+    }
+
+    .factor-list-table td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 4px;
+      color: var(--soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .factor-list-table td:nth-child(1) {
+      font-weight: 800;
+    }
+
+    .factor-list-table td:nth-child(3),
+    .factor-list-table td:nth-child(4) {
+      grid-column: 1 / -1;
+    }
+
+    .factor-list-table td:nth-child(5) {
+      grid-column: 3;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .factor-list-table td:nth-child(5)::before {
+      display: none;
+    }
+
+    .eval-btn {
+      border: 1px solid #b9d5ef;
+      color: var(--blue);
+      background: var(--blue-soft);
+      border-radius: 8px;
+      min-height: 32px;
+      padding: 0 12px;
+      font-weight: 700;
+    }
+
+    .eval-btn:hover {
+      background: #d9eafa;
+    }
+
+    .eval-shell {
+      display: grid;
+      gap: 12px;
+    }
+
+    .eval-result[hidden],
+    .eval-empty[hidden] {
+      display: none;
+    }
+
+    .command-line {
+      display: block;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      white-space: normal;
+      word-break: break-word;
+      font-size: 12px;
+    }
+
     .mini {
       padding: 8px;
       border-radius: 8px;
@@ -633,6 +760,10 @@
     .prototype-note { padding: 18px; font-size: 18px; }
     #detail-reason { font-size: 19.5px !important; }
 
+    .factor-list-table tbody { gap: 15px; padding: 18px; }
+    .factor-list-table tr { gap: 15px 24px; padding: 21px; }
+    .factor-list-table td::before { font-size: 18px; }
+
     @media (max-width: 1260px) {
       .app {
         grid-template-columns: 220px minmax(0, 1fr);
@@ -680,6 +811,22 @@
       .checks {
         grid-template-columns: 1fr;
       }
+
+      .factor-list-table tr {
+        grid-template-columns: 1fr;
+        padding: 14px 16px;
+      }
+
+      .factor-list-table td {
+        padding: 6px 0;
+      }
+
+      .factor-list-table td:nth-child(3),
+      .factor-list-table td:nth-child(4),
+      .factor-list-table td:nth-child(5) {
+        grid-column: 1;
+        grid-row: auto;
+      }
     }
   </style>
 </head>
@@ -693,6 +840,7 @@
       <nav class="nav" aria-label="工作台导航">
         <button class="active" data-page="dashboard">总览 <span>策略</span></button>
         <button data-page="factor-results">因子结果 <span>展示</span></button>
+        <button data-page="factor-list">因子列表 <span>评测</span></button>
         <button data-page="factor-pool">因子池 <span>评估</span></button>
         <button data-page="strategy">策略配置 <span>TopN</span></button>
         <button data-page="backtest">回测 <span>指标</span></button>
@@ -863,6 +1011,102 @@
               <div class="mini"><span>ICIR</span><b>0.22</b></div>
               <div class="mini"><span>覆盖率</span><b>82%</b></div>
               <div class="mini"><span>状态</span><b>candidate</b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="factor-list">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>因子列表</h3>
+            <span>公式、含义与受控评测</span>
+          </div>
+          <div class="table-wrap">
+            <table class="factor-list-table">
+              <thead>
+                <tr><th>因子名称</th><th>分类</th><th>计算公式</th><th>指标含义</th><th>评测</th></tr>
+              </thead>
+              <tbody>
+                <tr data-factor-row="Alpha014">
+                  <td data-label="因子名称">Alpha014</td>
+                  <td data-label="分类">量价</td>
+                  <td class="formula-cell" data-label="计算公式"><code>CLOSE - DELAY(CLOSE, 5)</code></td>
+                  <td class="meaning-cell" data-label="指标含义">刻画最近 5 个交易日收盘价变化，高分方向由训练窗口 Rank IC 符号统一。</td>
+                  <td data-label="评测"><button class="eval-btn" data-factor="Alpha014">评测</button></td>
+                </tr>
+                <tr data-factor-row="Alpha020">
+                  <td data-label="因子名称">Alpha020</td>
+                  <td data-label="分类">量价</td>
+                  <td class="formula-cell" data-label="计算公式"><code>(CLOSE - DELAY(CLOSE, 6)) / DELAY(CLOSE, 6) * 100</code></td>
+                  <td class="meaning-cell" data-label="指标含义">衡量 6 日收益强弱，用于捕捉短周期价格动量或反转信号。</td>
+                  <td data-label="评测"><button class="eval-btn" data-factor="Alpha020">评测</button></td>
+                </tr>
+                <tr data-factor-row="Alpha046">
+                  <td data-label="因子名称">Alpha046</td>
+                  <td data-label="分类">量价</td>
+                  <td class="formula-cell" data-label="计算公式"><code>(MEAN(CLOSE,3)+MEAN(CLOSE,6)+MEAN(CLOSE,12)+MEAN(CLOSE,24))/(4*CLOSE)</code></td>
+                  <td class="meaning-cell" data-label="指标含义">比较多周期均线与当前价格位置，反映趋势延续或均值回归状态。</td>
+                  <td data-label="评测"><button class="eval-btn" data-factor="Alpha046">评测</button></td>
+                </tr>
+                <tr data-factor-row="close_volume_pressure">
+                  <td data-label="因子名称">尾盘成交强度</td>
+                  <td data-label="分类">日内派生</td>
+                  <td class="formula-cell" data-label="计算公式"><code>SUM(AMOUNT_1M, 14:30-15:00) / SUM(AMOUNT_1M, 09:30-15:00)</code></td>
+                  <td class="meaning-cell" data-label="指标含义">刻画收盘前成交额集中度，观察尾盘资金推动是否对次日收益有稳定解释力。</td>
+                  <td data-label="评测"><button class="eval-btn" data-factor="close_volume_pressure">评测</button></td>
+                </tr>
+                <tr data-factor-row="orderbook_pressure_persistence">
+                  <td data-label="因子名称">盘口压力持续度</td>
+                  <td data-label="分类">盘口派生</td>
+                  <td class="formula-cell" data-label="计算公式"><code>MEAN((BID_VOL_1_5 - ASK_VOL_1_5) / (BID_VOL_1_5 + ASK_VOL_1_5), 20)</code></td>
+                  <td class="meaning-cell" data-label="指标含义">基于五档盘口挂单量不平衡，评估买卖盘压力在日内是否持续。</td>
+                  <td data-label="评测"><button class="eval-btn" data-factor="orderbook_pressure_persistence">评测</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px">
+          <div class="panel">
+            <div class="panel-head"><h3>评测规则</h3><span>唯一受控前端操作</span></div>
+            <div class="panel-body">
+              <div class="prototype-note">因子评测不是一次性结果，会随行情、股票池、评估窗口和成本假设变化。页面默认隐藏评测数据，点击评测后调用既有脚本或后端工具并展示结果；不提供在线因子生成、编辑或挖掘入口。</div>
+              <div class="kv" style="margin-top:12px">
+                <div><span>评测窗口</span><b>最近 756 个交易日</b></div>
+                <div><span>预测收益</span><b>未来 1/5/10 日</b></div>
+                <div><span>评测口径</span><b>Rank IC + 分组收益</b></div>
+                <div><span>准入状态</span><b>candidate -> watch -> active</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>评测结果</h3><span id="factor-eval-status">默认隐藏</span></div>
+            <div class="panel-body eval-shell">
+              <div class="eval-empty prototype-note" id="factor-eval-empty">选择一个因子并点击“评测”后，系统调用评测脚本并显示 IC、ICIR、覆盖率、分组收益和换手成本。</div>
+              <div class="eval-result" id="factor-eval-result" hidden>
+                <div class="detail-title">
+                  <div>
+                    <h2 id="eval-factor-name">Alpha020</h2>
+                    <p id="eval-factor-desc">6 日收益强弱</p>
+                  </div>
+                  <span class="tag amber" id="eval-factor-state">watch</span>
+                </div>
+                <span class="command-line" id="eval-command">evaluate-factor --factor Alpha020 --as-of 2026-06-07</span>
+                <div class="factor-metrics" style="margin-top:12px">
+                  <div class="mini"><span>Rank IC</span><b id="eval-ic">0.038</b></div>
+                  <div class="mini"><span>ICIR</span><b id="eval-icir">0.58</b></div>
+                  <div class="mini"><span>覆盖率</span><b id="eval-coverage">99%</b></div>
+                  <div class="mini"><span>换手成本</span><b id="eval-turnover">中</b></div>
+                </div>
+                <div class="kv" style="margin-top:12px">
+                  <div><span>五分组收益差</span><b id="eval-group-return">+4.8%</b></div>
+                  <div><span>相关性风险</span><b id="eval-correlation">中</b></div>
+                  <div><span>样本外表现</span><b id="eval-oos">通过观察</b></div>
+                  <div><span>结果时间</span><b id="eval-time">2026-06-08 09:05</b></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1098,10 +1342,84 @@
     const pageMeta = {
       dashboard: ['策略总览', '2026-06-08 09:00 信号批次 · Tushare 日频 + TDX 1m/5m/盘口派生特征'],
       'factor-results': ['因子结果', '代码侧离线因子挖掘结果，前端只读展示评价指标'],
+      'factor-list': ['因子列表', '因子名称、计算公式、指标含义与受控评测'],
       'factor-pool': ['因子池', 'IC、ICIR、覆盖率、相关性、换手成本和状态管理'],
       strategy: ['策略配置', 'TopN、缓冲区、股票池过滤和 V1 等权因子框架'],
       backtest: ['回测模块', '夏普、累计收益、最大回撤、交易频次、平均持仓天数'],
       signals: ['今日选股', '当日选股结果、持仓个股、全量标的综合得分和个股详情']
+    };
+
+    const factorEvalData = {
+      Alpha014: {
+        name: 'Alpha014',
+        desc: '5 日收盘价变化',
+        state: 'active',
+        tag: 'green',
+        ic: '0.041',
+        icir: '0.62',
+        coverage: '99%',
+        turnover: '中',
+        groupReturn: '+5.1%',
+        correlation: '低',
+        oos: '通过',
+        time: '2026-06-08 09:04'
+      },
+      Alpha020: {
+        name: 'Alpha020',
+        desc: '6 日收益强弱',
+        state: 'active',
+        tag: 'green',
+        ic: '0.038',
+        icir: '0.58',
+        coverage: '99%',
+        turnover: '中',
+        groupReturn: '+4.8%',
+        correlation: '中',
+        oos: '通过观察',
+        time: '2026-06-08 09:05'
+      },
+      Alpha046: {
+        name: 'Alpha046',
+        desc: '多周期均线位置',
+        state: 'active',
+        tag: 'green',
+        ic: '0.033',
+        icir: '0.53',
+        coverage: '98%',
+        turnover: '低',
+        groupReturn: '+3.9%',
+        correlation: '低',
+        oos: '通过',
+        time: '2026-06-08 09:06'
+      },
+      close_volume_pressure: {
+        name: '尾盘成交强度',
+        desc: '尾盘成交额集中度',
+        state: 'watch',
+        tag: 'amber',
+        ic: '0.036',
+        icir: '0.48',
+        coverage: '96%',
+        turnover: '待测',
+        groupReturn: '+3.2%',
+        correlation: '待测',
+        oos: '观察中',
+        time: '2026-06-08 09:07'
+      },
+      orderbook_pressure_persistence: {
+        name: '盘口压力持续度',
+        desc: '五档挂单不平衡持续性',
+        state: 'candidate',
+        tag: 'gray',
+        ic: '0.018',
+        icir: '0.22',
+        coverage: '82%',
+        turnover: '待测',
+        groupReturn: '+1.1%',
+        correlation: '待测',
+        oos: '未通过',
+        time: '2026-06-08 09:08'
+      }
     };
 
     document.querySelectorAll('.nav button').forEach(button => {
@@ -1147,6 +1465,30 @@
         const action = document.getElementById('detail-action');
         action.textContent = row.dataset.action;
         action.className = 'tag ' + (row.dataset.action === '卖出' ? 'red' : row.dataset.action === '观察' ? 'amber' : 'green');
+      });
+    });
+
+    document.querySelectorAll('.eval-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const data = factorEvalData[button.dataset.factor];
+        document.querySelectorAll('[data-factor-row]').forEach(row => row.classList.remove('selected'));
+        document.querySelector(`[data-factor-row="${button.dataset.factor}"]`).classList.add('selected');
+        document.getElementById('factor-eval-empty').hidden = true;
+        document.getElementById('factor-eval-result').hidden = false;
+        document.getElementById('factor-eval-status').textContent = '已完成';
+        document.getElementById('eval-factor-name').textContent = data.name;
+        document.getElementById('eval-factor-desc').textContent = data.desc;
+        document.getElementById('eval-factor-state').textContent = data.state;
+        document.getElementById('eval-factor-state').className = `tag ${data.tag}`;
+        document.getElementById('eval-command').textContent = `evaluate-factor --factor ${button.dataset.factor} --as-of 2026-06-07`;
+        document.getElementById('eval-ic').textContent = data.ic;
+        document.getElementById('eval-icir').textContent = data.icir;
+        document.getElementById('eval-coverage').textContent = data.coverage;
+        document.getElementById('eval-turnover').textContent = data.turnover;
+        document.getElementById('eval-group-return').textContent = data.groupReturn;
+        document.getElementById('eval-correlation').textContent = data.correlation;
+        document.getElementById('eval-oos').textContent = data.oos;
+        document.getElementById('eval-time').textContent = data.time;
       });
     });
 

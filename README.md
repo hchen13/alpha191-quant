@@ -69,11 +69,14 @@ The prototype covers:
 
 - Strategy overview
 - Offline factor discovery result display
+- Factor list with a controlled evaluation trigger
 - Factor pool evaluation
 - Strategy configuration
 - Backtesting metrics
 - Daily stock selection
 - Per-stock detail view
+
+The UI remains a data viewing workbench. It may trigger factor evaluation through the approved evaluation tool, but it does not provide online factor generation, editing, mining, or submission.
 
 ## Security
 

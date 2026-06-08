@@ -965,7 +965,7 @@
             <p><a href="./alpha191-workbench-prototype.html">docs/alpha191-workbench-prototype.html</a></p>
             <ul>
               <li>完整工作台页面，不是营销页，不是文档内局部 mock。</li>
-              <li>原型必须覆盖因子结果展示、因子池、策略配置、回测、今日选股和个股详情。</li>
+              <li>原型必须覆盖因子结果展示、因子列表、因子池、策略配置、回测、今日选股和个股详情。</li>
               <li>后续真实前端实现应保持与原型一致的导航、布局、表格、详情抽屉和指标呈现。</li>
             </ul>
           </div>
@@ -974,7 +974,9 @@
             <ul>
               <li>策略配置支持 Top5/Top10 选股数量、Top10/Top15 缓冲范围和筛选条件。</li>
               <li>因子结果页面展示离线挖掘产物、IC、ICIR、覆盖率、相关性、换手成本和因子池状态。</li>
-              <li>前端是纯展示看板，不提供在线因子生成、挖掘、编辑或提交入口。</li>
+              <li>因子列表页面展示因子名称、计算公式和指标含义。</li>
+              <li>因子评测数据默认隐藏；点击评测按钮后调用 <code>evaluate-factor --factor &lt;factor_id&gt;</code> 或后端等价工具，完成后展示 IC、ICIR、覆盖率、分组收益和换手成本。</li>
+              <li>前端是展示看板；唯一允许的触发型操作是受控因子评测，不提供在线因子生成、挖掘、编辑或提交入口。</li>
               <li>回测页面展示条件、夏普比率、累计收益、最大回撤、交易频次、平均持仓天数。</li>
               <li>选股页面展示当日选股、当前持仓、全量标的综合得分；点击标的进入详情。</li>
             </ul>
@@ -1108,8 +1110,8 @@
           </div>
           <div class="milestone">
             <div class="phase">M5</div>
-            <div><h4>独立 UI 工作台</h4><p>按 <code>docs/alpha191-workbench-prototype.html</code> 实现完整展示看板，覆盖因子结果、因子池、策略配置、回测、今日选股和个股详情。</p></div>
-            <ul><li>FastAPI + 前端或 Streamlit 二选一</li><li>只读展示看板</li><li>接真实 mart 数据</li></ul>
+            <div><h4>独立 UI 工作台</h4><p>按 <code>docs/alpha191-workbench-prototype.html</code> 实现完整展示看板，覆盖因子结果、因子列表、因子池、策略配置、回测、今日选股和个股详情。</p></div>
+            <ul><li>FastAPI + 前端或 Streamlit 二选一</li><li>展示看板 + 受控因子评测</li><li>接真实 mart 数据</li></ul>
           </div>
           <div class="milestone">
             <div class="phase">M6</div>
@@ -1164,9 +1166,11 @@
             <ul>
               <li>UI 是独立完整页面，不是文档内局部区块。</li>
               <li>实际前端页面结构与 <code>docs/alpha191-workbench-prototype.html</code> 保持一致。</li>
-              <li>因子结果、因子池、策略配置、回测、今日选股、个股详情页面可访问。</li>
+              <li>因子结果、因子列表、因子池、策略配置、回测、今日选股、个股详情页面可访问。</li>
               <li>图表和表格读取真实 mart 数据，不使用硬编码 demo。</li>
-              <li>前端不提供在线因子生成、挖掘、编辑或提交入口。</li>
+              <li>因子列表包含名称、计算公式和指标含义；评测数据初始默认隐藏。</li>
+              <li>因子评测按钮调用 <code>evaluate-factor</code> 或后端等价工具，完成后展示 IC、ICIR、覆盖率、分组收益、相关性和换手成本。</li>
+              <li>前端不提供在线因子生成、挖掘、编辑或提交入口；因子评测是唯一允许的受控触发操作。</li>
               <li>移动端不重叠，桌面端信息密度足够。</li>
               <li>点击单只标的能查看当前策略规则下的关联数据、因子贡献和交易计划。</li>
             </ul>
@@ -1203,7 +1207,8 @@
 - 首批只实现文档列出的 10 个 Alpha191 简单因子，并作为 active 因子等权合成。
 - 因子池必须支持 candidate、watch、active、paused、retired；代码侧候选因子不得绕过评价直接 active。
 - 每个 milestone 都补最小必要测试和验证命令。
-- UI 必须按 docs/alpha191-workbench-prototype.html 实现独立完整只读展示看板，并接真实数据 mart；不得提供在线因子生成、挖掘、编辑或提交入口。
+- UI 必须按 docs/alpha191-workbench-prototype.html 实现独立完整展示看板，并接真实数据 mart；必须提供因子列表页，支持受控调用 evaluate-factor 或后端等价工具并展示评测结果。
+- UI 不得提供在线因子生成、挖掘、编辑或提交入口；因子评测是唯一允许的前端触发型操作。
 - 危险操作必须按 AGENTS.md 停下来确认。
 
 停止条件：
