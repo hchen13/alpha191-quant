@@ -68,7 +68,7 @@ docs/alpha191-workbench-prototype.html
 The prototype covers:
 
 - Strategy overview
-- AI-assisted factor discovery
+- Offline factor discovery result display
 - Factor pool evaluation
 - Strategy configuration
 - Backtesting metrics

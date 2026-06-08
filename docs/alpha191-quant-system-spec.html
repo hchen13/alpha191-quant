@@ -786,9 +786,10 @@
         </div>
         <div class="grid-2" style="margin-top:16px">
           <div class="panel">
-            <h4>AI 辅助因子挖掘</h4>
+            <h4>代码侧因子挖掘</h4>
             <ul>
-              <li>AI 只能提出候选因子定义、经济含义、依赖字段和计算公式。</li>
+              <li>因子挖掘通过代码、脚本或 CLI 离线完成，不集成到前端页面。</li>
+              <li>前端只读取并展示挖掘结果、评价指标和因子池状态，不提供在线生成或挖掘操作入口。</li>
               <li>候选因子必须先进入 <code>candidate</code>，完成覆盖率、IC、ICIR、分组收益、相关性和成本评估后才能升级。</li>
               <li>1m/5m/盘口数据先聚合为日频微观结构因子，例如尾盘强度、VWAP 偏离、成交量结构和盘口压力。</li>
               <li>如果只有盘口快照，不得描述为逐笔订单流，只能描述为盘口快照派生因子。</li>
@@ -902,7 +903,7 @@
 
       <section id="factors">
         <h3>V1 因子池初始化</h3>
-        <p>第一批 active 因子只使用低算子复杂度的 Alpha191 量价因子，避免在数据和评估框架未稳定前铺开 191 个公式。AI 挖掘出的日内微观结构因子先进入 candidate，不直接参与打分。</p>
+        <p>第一批 active 因子只使用低算子复杂度的 Alpha191 量价因子，避免在数据和评估框架未稳定前铺开 191 个公式。代码侧挖掘出的日内微观结构因子先进入 candidate，不直接参与打分。</p>
         <div class="table-scroll">
           <table class="factor-table">
             <thead>
@@ -964,7 +965,7 @@
             <p><a href="./alpha191-workbench-prototype.html">docs/alpha191-workbench-prototype.html</a></p>
             <ul>
               <li>完整工作台页面，不是营销页，不是文档内局部 mock。</li>
-              <li>原型必须覆盖因子挖掘、因子池、策略配置、回测、今日选股和个股详情。</li>
+              <li>原型必须覆盖因子结果展示、因子池、策略配置、回测、今日选股和个股详情。</li>
               <li>后续真实前端实现应保持与原型一致的导航、布局、表格、详情抽屉和指标呈现。</li>
             </ul>
           </div>
@@ -972,7 +973,8 @@
             <h4>核心交互</h4>
             <ul>
               <li>策略配置支持 Top5/Top10 选股数量、Top10/Top15 缓冲范围和筛选条件。</li>
-              <li>因子挖掘页面展示 AI 候选因子、IC、ICIR、覆盖率、相关性、换手成本和因子池状态。</li>
+              <li>因子结果页面展示离线挖掘产物、IC、ICIR、覆盖率、相关性、换手成本和因子池状态。</li>
+              <li>前端是纯展示看板，不提供在线因子生成、挖掘、编辑或提交入口。</li>
               <li>回测页面展示条件、夏普比率、累计收益、最大回撤、交易频次、平均持仓天数。</li>
               <li>选股页面展示当日选股、当前持仓、全量标的综合得分；点击标的进入详情。</li>
             </ul>
@@ -1096,7 +1098,7 @@
           </div>
           <div class="milestone">
             <div class="phase">M3</div>
-            <div><h4>因子池与首批 active 因子</h4><p>实现 10 个简单 Alpha191 因子、因子池状态、AI 候选因子登记、IC/ICIR/相关性/换手评估。</p></div>
+            <div><h4>因子池与首批 active 因子</h4><p>实现 10 个简单 Alpha191 因子、代码侧候选因子登记、因子池状态、IC/ICIR/相关性/换手评估。</p></div>
             <ul><li><code>compute-factors</code></li><li><code>evaluate-factors</code></li><li><code>factor-pool</code></li><li>研究报告可视化</li></ul>
           </div>
           <div class="milestone">
@@ -1106,8 +1108,8 @@
           </div>
           <div class="milestone">
             <div class="phase">M5</div>
-            <div><h4>独立 UI 工作台</h4><p>按 <code>docs/alpha191-workbench-prototype.html</code> 实现完整页面，覆盖因子挖掘、因子池、策略配置、回测、今日选股和个股详情。</p></div>
-            <ul><li>FastAPI + 前端或 Streamlit 二选一</li><li>交互与原型一致</li><li>接真实 mart 数据</li></ul>
+            <div><h4>独立 UI 工作台</h4><p>按 <code>docs/alpha191-workbench-prototype.html</code> 实现完整展示看板，覆盖因子结果、因子池、策略配置、回测、今日选股和个股详情。</p></div>
+            <ul><li>FastAPI + 前端或 Streamlit 二选一</li><li>只读展示看板</li><li>接真实 mart 数据</li></ul>
           </div>
           <div class="milestone">
             <div class="phase">M6</div>
@@ -1142,7 +1144,7 @@
               <li>10 个 Alpha191 因子都有单元测试和快照样例。</li>
               <li>每个因子都有 Rank IC、ICIR、覆盖率、分组收益、相关性、换手成本。</li>
               <li>因子池支持 candidate、watch、active、paused、retired 状态。</li>
-              <li>AI 生成因子只能进入 candidate，不能绕过准入流程直接 active。</li>
+              <li>代码侧挖掘生成的候选因子只能进入 candidate，不能绕过准入流程直接 active。</li>
               <li>训练期确定方向，样本外验证，不得未来函数。</li>
               <li>因子分类为量价、基本面、另类，首批 Alpha191 归量价。</li>
             </ul>
@@ -1162,8 +1164,9 @@
             <ul>
               <li>UI 是独立完整页面，不是文档内局部区块。</li>
               <li>实际前端页面结构与 <code>docs/alpha191-workbench-prototype.html</code> 保持一致。</li>
-              <li>因子挖掘、因子池、策略配置、回测、今日选股、个股详情页面可访问。</li>
+              <li>因子结果、因子池、策略配置、回测、今日选股、个股详情页面可访问。</li>
               <li>图表和表格读取真实 mart 数据，不使用硬编码 demo。</li>
+              <li>前端不提供在线因子生成、挖掘、编辑或提交入口。</li>
               <li>移动端不重叠，桌面端信息密度足够。</li>
               <li>点击单只标的能查看当前策略规则下的关联数据、因子贡献和交易计划。</li>
             </ul>
@@ -1198,9 +1201,9 @@
 - 若数据库在存储空间和读取速度综合表现最优，则改用数据库持久化。
 - Tushare 为日频主源；TDX sidecar 为日内主源；腾讯/东财只做辅助和 fallback。
 - 首批只实现文档列出的 10 个 Alpha191 简单因子，并作为 active 因子等权合成。
-- 因子池必须支持 candidate、watch、active、paused、retired；AI 候选因子不得绕过评价直接 active。
+- 因子池必须支持 candidate、watch、active、paused、retired；代码侧候选因子不得绕过评价直接 active。
 - 每个 milestone 都补最小必要测试和验证命令。
-- UI 必须按 docs/alpha191-workbench-prototype.html 实现独立完整工作台，并接真实数据 mart，不能只做静态展示壳。
+- UI 必须按 docs/alpha191-workbench-prototype.html 实现独立完整只读展示看板，并接真实数据 mart；不得提供在线因子生成、挖掘、编辑或提交入口。
 - 危险操作必须按 AGENTS.md 停下来确认。
 
 停止条件：
