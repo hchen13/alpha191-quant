@@ -177,6 +177,7 @@
       border-radius: 8px;
       overflow: hidden;
       height: 36px;
+      width: fit-content;
     }
 
     .seg button {
@@ -184,7 +185,10 @@
       background: transparent;
       color: var(--muted);
       min-width: 70px;
+      height: 100%;
       padding: 0 12px;
+      position: relative;
+      z-index: 1;
     }
 
     .seg button.active {
@@ -428,6 +432,10 @@
       width: 100%;
     }
 
+    .setting-row .seg {
+      justify-self: start;
+    }
+
     .checks {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -478,15 +486,70 @@
       line-height: 1.45;
     }
 
-    .formula-cell code,
     .command-line {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
-    .formula-cell code {
+    .latex-formula {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      line-height: 1.4;
       overflow-wrap: anywhere;
       word-break: break-word;
-      white-space: normal;
+    }
+
+    .latex-formula .fn {
+      font-style: normal;
+      letter-spacing: 0;
+    }
+
+    .latex-formula sub {
+      font-size: .68em;
+      line-height: 0;
+    }
+
+    .fraction {
+      display: inline-grid;
+      gap: 2px;
+      align-items: center;
+      text-align: center;
+      vertical-align: middle;
+      min-width: 80px;
+    }
+
+    .fraction .top {
+      padding: 0 8px 2px;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .fraction .bottom {
+      padding: 2px 8px 0;
+    }
+
+    .sum-term {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .sigma {
+      font-size: 1.55em;
+      line-height: 1;
+    }
+
+    .limits {
+      display: grid;
+      line-height: 1.05;
+      font-size: .62em;
+    }
+
+    .latex-source {
+      display: none;
     }
 
     .meaning-cell {
@@ -549,18 +612,23 @@
     }
 
     .factor-list-table td:nth-child(3),
-    .factor-list-table td:nth-child(4) {
+    .factor-list-table td:nth-child(4),
+    .factor-list-table td:nth-child(5) {
       grid-column: 1 / -1;
     }
 
-    .factor-list-table td:nth-child(5) {
+    .factor-list-table td:nth-child(6) {
       grid-column: 3;
       grid-row: 1;
       align-self: start;
     }
 
-    .factor-list-table td:nth-child(5)::before {
+    .factor-list-table td:nth-child(6)::before {
       display: none;
+    }
+
+    .factor-inline-metrics .factor-metrics {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
     .eval-btn {
@@ -701,6 +769,96 @@
       gap: 12px;
     }
 
+    .portfolio-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .portfolio-chart-shell {
+      position: relative;
+      min-height: 320px;
+    }
+
+    .portfolio-chart-shell .chart {
+      height: 320px;
+    }
+
+    .hover-day {
+      cursor: pointer;
+    }
+
+    .portfolio-hover-card {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: min(320px, calc(100% - 36px));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 254, 250, .96);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .portfolio-hover-card h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    .portfolio-hover-card p {
+      margin: 4px 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .side-signal-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .side-signal-row {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .side-signal-row:hover,
+    .side-signal-row.selected {
+      background: var(--blue-soft);
+      border-color: #b9d5ef;
+    }
+
+    .side-signal-row .line {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .side-signal-row b {
+      font-size: 13px;
+    }
+
+    .side-signal-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .selection-empty[hidden],
+    .selection-detail[hidden] {
+      display: none;
+    }
+
     .prototype-note {
       padding: 12px;
       border-radius: 8px;
@@ -752,17 +910,20 @@
     .factor-card h4, .mini b { font-size: 21px; }
     .factor-card p { font-size: 18px; }
     .mini span { font-size: 16.5px; }
+    .latex-formula { font-size: 27px; gap: 12px; }
     .right { padding: 24px; gap: 18px; }
     .detail-title h2 { font-size: 30px; }
     .detail-title p { font-size: 18px; }
     .kv div { font-size: 19.5px; }
     .contrib-row { grid-template-columns: 144px minmax(0, 1fr) 63px; font-size: 18px; }
     .prototype-note { padding: 18px; font-size: 18px; }
-    #detail-reason { font-size: 19.5px !important; }
-
     .factor-list-table tbody { gap: 15px; padding: 18px; }
     .factor-list-table tr { gap: 15px 24px; padding: 21px; }
     .factor-list-table td::before { font-size: 18px; }
+    .portfolio-hover-card h4 { font-size: 21px; }
+    .portfolio-hover-card p, .side-signal-row span { font-size: 18px; }
+    .side-signal-row { padding: 15px; gap: 9px; }
+    .side-signal-row b { font-size: 19.5px; }
 
     @media (max-width: 1260px) {
       .app {
@@ -823,9 +984,14 @@
 
       .factor-list-table td:nth-child(3),
       .factor-list-table td:nth-child(4),
-      .factor-list-table td:nth-child(5) {
+      .factor-list-table td:nth-child(5),
+      .factor-list-table td:nth-child(6) {
         grid-column: 1;
         grid-row: auto;
+      }
+
+      .factor-inline-metrics .factor-metrics {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -839,11 +1005,9 @@
       </div>
       <nav class="nav" aria-label="工作台导航">
         <button class="active" data-page="dashboard">总览 <span>策略</span></button>
-        <button data-page="factor-results">因子结果 <span>展示</span></button>
         <button data-page="factor-list">因子列表 <span>评测</span></button>
-        <button data-page="factor-pool">因子池 <span>评估</span></button>
         <button data-page="strategy">策略配置 <span>TopN</span></button>
-        <button data-page="backtest">回测 <span>指标</span></button>
+        <button data-page="portfolio">Portfolio <span>组合</span></button>
         <button data-page="signals">今日选股 <span>执行</span></button>
       </nav>
       <div class="side-note">
@@ -859,14 +1023,6 @@
         </div>
         <div class="controls">
           <span class="date-chip">as_of 2026-06-07</span>
-          <div class="seg" aria-label="选股数量">
-            <button class="active" data-top="5">Top5</button>
-            <button data-top="10">Top10</button>
-          </div>
-          <div class="seg" aria-label="缓冲区">
-            <button data-buffer="10">缓冲 Top10</button>
-            <button class="active" data-buffer="15">缓冲 Top15</button>
-          </div>
         </div>
       </div>
 
@@ -948,74 +1104,6 @@
         </div>
       </section>
 
-      <section class="page" id="factor-results">
-        <div class="grid-2">
-          <div class="panel">
-            <div class="panel-head">
-              <h3>离线因子挖掘结果</h3>
-              <span>代码侧产出，前端只读展示</span>
-            </div>
-            <div class="panel-body">
-              <div class="kv">
-                <div><span>最近挖掘批次</span><b>2026-06-07 close</b></div>
-                <div><span>候选因子数量</span><b>3</b></div>
-                <div><span>结果来源</span><b>factor_mining_report</b></div>
-                <div><span>页面权限</span><b>只读</b></div>
-                <div><span>操作入口</span><b>无在线生成入口</b></div>
-              </div>
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-head">
-              <h3>候选因子准入</h3>
-              <span>candidate -> watch -> active</span>
-            </div>
-            <div class="panel-body">
-              <div class="kv">
-                <div><span>覆盖率</span><b>&gt;= 80%</b></div>
-                <div><span>ICIR</span><b>&gt; 0.3 观察，&gt; 0.5 候选启用</b></div>
-                <div><span>相关性</span><b>避免重复 active 因子</b></div>
-                <div><span>组合增量</span><b>Top5/Top15 约束下验证</b></div>
-                <div><span>交易成本</span><b>必须比较成本前后收益</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-3" style="margin-top:12px">
-          <div class="factor-card">
-            <h4>尾盘成交强度</h4>
-            <p>尾盘 30 分钟成交额占全天成交额比例，与尾盘收益方向结合，刻画收盘前资金推动强度。</p>
-            <div class="factor-metrics">
-              <div class="mini"><span>Rank IC</span><b>0.036</b></div>
-              <div class="mini"><span>ICIR</span><b>0.48</b></div>
-              <div class="mini"><span>覆盖率</span><b>96%</b></div>
-              <div class="mini"><span>状态</span><b>watch</b></div>
-            </div>
-          </div>
-          <div class="factor-card">
-            <h4>VWAP 收盘偏离</h4>
-            <p>收盘价相对当日 VWAP 的标准化偏离，排查是否只是 5 日动量的重复表达。</p>
-            <div class="factor-metrics">
-              <div class="mini"><span>Rank IC</span><b>0.029</b></div>
-              <div class="mini"><span>ICIR</span><b>0.41</b></div>
-              <div class="mini"><span>覆盖率</span><b>98%</b></div>
-              <div class="mini"><span>状态</span><b>candidate</b></div>
-            </div>
-          </div>
-          <div class="factor-card">
-            <h4>盘口压力持续度</h4>
-            <p>买一到买五挂单量相对卖一到卖五挂单量的滚动不平衡，只基于盘口快照，不声明逐笔订单流。</p>
-            <div class="factor-metrics">
-              <div class="mini"><span>Rank IC</span><b>0.018</b></div>
-              <div class="mini"><span>ICIR</span><b>0.22</b></div>
-              <div class="mini"><span>覆盖率</span><b>82%</b></div>
-              <div class="mini"><span>状态</span><b>candidate</b></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="page" id="factor-list">
         <div class="panel">
           <div class="panel-head">
@@ -1025,42 +1113,126 @@
           <div class="table-wrap">
             <table class="factor-list-table">
               <thead>
-                <tr><th>因子名称</th><th>分类</th><th>计算公式</th><th>指标含义</th><th>评测</th></tr>
+                <tr><th>因子名称</th><th>分类</th><th>LaTeX 公式</th><th>业务含义</th><th>评测指标</th><th>评测</th></tr>
               </thead>
               <tbody>
                 <tr data-factor-row="Alpha014">
                   <td data-label="因子名称">Alpha014</td>
                   <td data-label="分类">量价</td>
-                  <td class="formula-cell" data-label="计算公式"><code>CLOSE - DELAY(CLOSE, 5)</code></td>
-                  <td class="meaning-cell" data-label="指标含义">刻画最近 5 个交易日收盘价变化，高分方向由训练窗口 Rank IC 符号统一。</td>
+                  <td class="formula-cell" data-label="LaTeX 公式">
+                    <div class="latex-formula"><span>C<sub>t</sub> - C<sub>t-5</sub></span></div>
+                    <div class="latex-source">C_t - C_{t-5}</div>
+                  </td>
+                  <td class="meaning-cell" data-label="业务含义">刻画最近 5 个交易日收盘价变化，高分方向由训练窗口 Rank IC 符号统一。</td>
+                  <td class="factor-inline-metrics" data-label="评测指标">
+                    <div class="factor-metrics">
+                      <div class="mini"><span>Rank IC</span><b>0.041</b></div>
+                      <div class="mini"><span>ICIR</span><b>0.62</b></div>
+                      <div class="mini"><span>覆盖率</span><b>99%</b></div>
+                      <div class="mini"><span>换手成本</span><b>中</b></div>
+                      <div class="mini"><span>状态</span><b>active</b></div>
+                    </div>
+                  </td>
                   <td data-label="评测"><button class="eval-btn" data-factor="Alpha014">评测</button></td>
                 </tr>
                 <tr data-factor-row="Alpha020">
                   <td data-label="因子名称">Alpha020</td>
                   <td data-label="分类">量价</td>
-                  <td class="formula-cell" data-label="计算公式"><code>(CLOSE - DELAY(CLOSE, 6)) / DELAY(CLOSE, 6) * 100</code></td>
-                  <td class="meaning-cell" data-label="指标含义">衡量 6 日收益强弱，用于捕捉短周期价格动量或反转信号。</td>
+                  <td class="formula-cell" data-label="LaTeX 公式">
+                    <div class="latex-formula">
+                      <span class="fraction">
+                        <span class="top">C<sub>t</sub> - C<sub>t-6</sub></span>
+                        <span class="bottom">C<sub>t-6</sub></span>
+                      </span>
+                      <span>&times; 100</span>
+                    </div>
+                    <div class="latex-source">\frac{C_t - C_{t-6}}{C_{t-6}} \times 100</div>
+                  </td>
+                  <td class="meaning-cell" data-label="业务含义">衡量 6 日收益强弱，用于捕捉短周期价格动量或反转信号。</td>
+                  <td class="factor-inline-metrics" data-label="评测指标">
+                    <div class="factor-metrics">
+                      <div class="mini"><span>Rank IC</span><b>0.038</b></div>
+                      <div class="mini"><span>ICIR</span><b>0.58</b></div>
+                      <div class="mini"><span>覆盖率</span><b>99%</b></div>
+                      <div class="mini"><span>换手成本</span><b>中</b></div>
+                      <div class="mini"><span>状态</span><b>active</b></div>
+                    </div>
+                  </td>
                   <td data-label="评测"><button class="eval-btn" data-factor="Alpha020">评测</button></td>
                 </tr>
                 <tr data-factor-row="Alpha046">
                   <td data-label="因子名称">Alpha046</td>
                   <td data-label="分类">量价</td>
-                  <td class="formula-cell" data-label="计算公式"><code>(MEAN(CLOSE,3)+MEAN(CLOSE,6)+MEAN(CLOSE,12)+MEAN(CLOSE,24))/(4*CLOSE)</code></td>
-                  <td class="meaning-cell" data-label="指标含义">比较多周期均线与当前价格位置，反映趋势延续或均值回归状态。</td>
+                  <td class="formula-cell" data-label="LaTeX 公式">
+                    <div class="latex-formula">
+                      <span class="fraction">
+                        <span class="top"><span class="fn">MA</span><sub>3</sub>(C) + <span class="fn">MA</span><sub>6</sub>(C) + <span class="fn">MA</span><sub>12</sub>(C) + <span class="fn">MA</span><sub>24</sub>(C)</span>
+                        <span class="bottom">4C<sub>t</sub></span>
+                      </span>
+                    </div>
+                    <div class="latex-source">\frac{MA_3(C)+MA_6(C)+MA_{12}(C)+MA_{24}(C)}{4C_t}</div>
+                  </td>
+                  <td class="meaning-cell" data-label="业务含义">比较多周期均线与当前价格位置，反映趋势延续或均值回归状态。</td>
+                  <td class="factor-inline-metrics" data-label="评测指标">
+                    <div class="factor-metrics">
+                      <div class="mini"><span>Rank IC</span><b>0.033</b></div>
+                      <div class="mini"><span>ICIR</span><b>0.53</b></div>
+                      <div class="mini"><span>覆盖率</span><b>98%</b></div>
+                      <div class="mini"><span>换手成本</span><b>低</b></div>
+                      <div class="mini"><span>状态</span><b>active</b></div>
+                    </div>
+                  </td>
                   <td data-label="评测"><button class="eval-btn" data-factor="Alpha046">评测</button></td>
                 </tr>
                 <tr data-factor-row="close_volume_pressure">
                   <td data-label="因子名称">尾盘成交强度</td>
                   <td data-label="分类">日内派生</td>
-                  <td class="formula-cell" data-label="计算公式"><code>SUM(AMOUNT_1M, 14:30-15:00) / SUM(AMOUNT_1M, 09:30-15:00)</code></td>
-                  <td class="meaning-cell" data-label="指标含义">刻画收盘前成交额集中度，观察尾盘资金推动是否对次日收益有稳定解释力。</td>
+                  <td class="formula-cell" data-label="LaTeX 公式">
+                    <div class="latex-formula">
+                      <span class="fraction">
+                        <span class="top"><span class="sum-term"><span class="sigma">&sum;</span><span class="limits"><span>15:00</span><span>14:30</span></span></span>A<sub>1m</sub></span>
+                        <span class="bottom"><span class="sum-term"><span class="sigma">&sum;</span><span class="limits"><span>15:00</span><span>09:30</span></span></span>A<sub>1m</sub></span>
+                      </span>
+                    </div>
+                    <div class="latex-source">\frac{\sum_{14:30}^{15:00} A_{1m}}{\sum_{09:30}^{15:00} A_{1m}}</div>
+                  </td>
+                  <td class="meaning-cell" data-label="业务含义">刻画收盘前成交额集中度，观察尾盘资金推动是否对次日收益有稳定解释力。</td>
+                  <td class="factor-inline-metrics" data-label="评测指标">
+                    <div class="factor-metrics">
+                      <div class="mini"><span>Rank IC</span><b>0.036</b></div>
+                      <div class="mini"><span>ICIR</span><b>0.48</b></div>
+                      <div class="mini"><span>覆盖率</span><b>96%</b></div>
+                      <div class="mini"><span>换手成本</span><b>待测</b></div>
+                      <div class="mini"><span>状态</span><b>watch</b></div>
+                    </div>
+                  </td>
                   <td data-label="评测"><button class="eval-btn" data-factor="close_volume_pressure">评测</button></td>
                 </tr>
                 <tr data-factor-row="orderbook_pressure_persistence">
                   <td data-label="因子名称">盘口压力持续度</td>
                   <td data-label="分类">盘口派生</td>
-                  <td class="formula-cell" data-label="计算公式"><code>MEAN((BID_VOL_1_5 - ASK_VOL_1_5) / (BID_VOL_1_5 + ASK_VOL_1_5), 20)</code></td>
-                  <td class="meaning-cell" data-label="指标含义">基于五档盘口挂单量不平衡，评估买卖盘压力在日内是否持续。</td>
+                  <td class="formula-cell" data-label="LaTeX 公式">
+                    <div class="latex-formula">
+                      <span class="fn">MA</span><sub>20</sub>
+                      <span>(</span>
+                      <span class="fraction">
+                        <span class="top">B<sub>1:5</sub> - S<sub>1:5</sub></span>
+                        <span class="bottom">B<sub>1:5</sub> + S<sub>1:5</sub></span>
+                      </span>
+                      <span>)</span>
+                    </div>
+                    <div class="latex-source">MA_{20}\left(\frac{B_{1:5}-S_{1:5}}{B_{1:5}+S_{1:5}}\right)</div>
+                  </td>
+                  <td class="meaning-cell" data-label="业务含义">基于五档盘口挂单量不平衡，评估买卖盘压力在日内是否持续。</td>
+                  <td class="factor-inline-metrics" data-label="评测指标">
+                    <div class="factor-metrics">
+                      <div class="mini"><span>Rank IC</span><b>0.018</b></div>
+                      <div class="mini"><span>ICIR</span><b>0.22</b></div>
+                      <div class="mini"><span>覆盖率</span><b>82%</b></div>
+                      <div class="mini"><span>换手成本</span><b>待测</b></div>
+                      <div class="mini"><span>状态</span><b>candidate</b></div>
+                    </div>
+                  </td>
                   <td data-label="评测"><button class="eval-btn" data-factor="orderbook_pressure_persistence">评测</button></td>
                 </tr>
               </tbody>
@@ -1112,54 +1284,6 @@
         </div>
       </section>
 
-      <section class="page" id="factor-pool">
-        <div class="panel">
-          <div class="panel-head">
-            <h3>因子池与评价指标</h3>
-            <span>active 因子参与 V1 等权综合打分</span>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr><th>因子</th><th>分类</th><th>状态</th><th>Rank IC</th><th>ICIR</th><th>覆盖率</th><th>相关性风险</th><th>换手成本</th><th>操作</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Alpha014</td><td>量价</td><td><span class="tag green">active</span></td><td>0.041</td><td>0.62</td><td>99%</td><td>低</td><td>中</td><td>保留</td></tr>
-                <tr><td>Alpha020</td><td>量价</td><td><span class="tag green">active</span></td><td>0.038</td><td>0.58</td><td>99%</td><td>中</td><td>中</td><td>保留</td></tr>
-                <tr><td>Alpha046</td><td>量价</td><td><span class="tag green">active</span></td><td>0.033</td><td>0.53</td><td>98%</td><td>低</td><td>低</td><td>保留</td></tr>
-                <tr><td>尾盘成交强度</td><td>日内派生</td><td><span class="tag amber">watch</span></td><td>0.036</td><td>0.48</td><td>96%</td><td>待测</td><td>待测</td><td>增量回测</td></tr>
-                <tr><td>盘口压力持续度</td><td>盘口派生</td><td><span class="tag gray">candidate</span></td><td>0.018</td><td>0.22</td><td>82%</td><td>待测</td><td>待测</td><td>继续观察</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-top:12px">
-          <div class="panel">
-            <div class="panel-head"><h3>IC 滚动曲线</h3><span>60 日窗口</span></div>
-            <div class="chart">
-              <svg viewBox="0 0 720 260" preserveAspectRatio="none">
-                <line x1="0" y1="130" x2="720" y2="130" stroke="#cfc7b8"/>
-                <path d="M0 128 C44 96 86 160 126 108 S214 78 260 126 S352 168 402 102 S492 92 548 122 S642 74 720 92" fill="none" stroke="#2369b3" stroke-width="4"/>
-                <path d="M0 138 C58 122 102 148 156 116 S250 100 314 134 S420 156 468 118 S594 108 720 116" fill="none" stroke="#198f63" stroke-width="3"/>
-              </svg>
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><h3>因子相关性检查</h3><span>active + watch</span></div>
-            <div class="panel-body">
-              <div class="prototype-note">新增因子不能只因为单因子 IC 好就进入 active。必须检查它是否提供新信息，以及加入 Top5/Top15 组合后是否改善收益、回撤或换手。</div>
-              <div class="kv" style="margin-top:12px">
-                <div><span>Alpha014 vs Alpha020</span><b>0.64</b></div>
-                <div><span>Alpha046 vs Alpha034</span><b>0.48</b></div>
-                <div><span>尾盘成交强度 vs Alpha020</span><b>0.31</b></div>
-                <div><span>VWAP 偏离 vs Alpha031</span><b>0.57</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="page" id="strategy">
         <div class="grid-2">
           <div class="panel">
@@ -1168,6 +1292,22 @@
               <span>当前为 V1 固定框架</span>
             </div>
             <div class="panel-body settings">
+              <div class="setting-row">
+                <label>选股标的数量</label>
+                <div class="seg" aria-label="选股数量">
+                  <button class="active" data-top="5">Top5</button>
+                  <button data-top="10">Top10</button>
+                </div>
+                <b id="strategy-top">Top5</b>
+              </div>
+              <div class="setting-row">
+                <label>缓冲标的范围</label>
+                <div class="seg" aria-label="缓冲区">
+                  <button data-buffer="10">Top10</button>
+                  <button class="active" data-buffer="15">Top15</button>
+                </div>
+                <b id="strategy-buffer">Top15</b>
+              </div>
               <div class="setting-row">
                 <label for="liquidity">近 20 日成交额下限</label>
                 <input id="liquidity" type="range" min="1000" max="10000" value="3000">
@@ -1211,29 +1351,58 @@
         </div>
       </section>
 
-      <section class="page" id="backtest">
+      <section class="page" id="portfolio">
+        <div class="portfolio-toolbar">
+          <div class="seg" aria-label="组合场景">
+            <button class="active" data-portfolio-mode="backtest">回测</button>
+            <button data-portfolio-mode="live">实盘</button>
+          </div>
+          <span class="date-chip">组合口径：Top<span id="portfolio-top">5</span> / 缓冲 Top<span id="portfolio-buffer">15</span> · T+1 · 成本 0.12%</span>
+        </div>
         <div class="grid-4">
-          <div class="panel metric"><div class="label">夏普比率</div><div class="value"><b>1.24</b></div><div class="hint">成本后</div></div>
-          <div class="panel metric"><div class="label">累计收益</div><div class="value"><b class="up">32.8%</b></div><div class="hint">2023-01 至 2026-05</div></div>
+          <div class="panel metric"><div class="label">收益</div><div class="value"><b class="up">32.8%</b></div><div class="hint">策略成本后累计</div></div>
           <div class="panel metric"><div class="label">最大回撤</div><div class="value"><b class="down">-12.6%</b></div><div class="hint">含涨跌停不可成交</div></div>
-          <div class="panel metric"><div class="label">平均持仓天数</div><div class="value"><b>8.7</b><span>天</span></div><div class="hint">Top15 缓冲后</div></div>
+          <div class="panel metric"><div class="label">夏普比率</div><div class="value"><b>1.24</b></div><div class="hint">日频年化</div></div>
+          <div class="panel metric"><div class="label">胜率</div><div class="value"><b>54.8%</b></div><div class="hint">按调仓周期统计</div></div>
         </div>
         <div class="backtest-grid" style="margin-top:12px">
           <div class="panel">
-            <div class="panel-head"><h3>累计收益与回撤</h3><span>策略 vs 沪深300</span></div>
-            <div class="chart">
+            <div class="panel-head"><h3>策略收益与沪深300</h3><span>悬浮 K 线查看持仓与下一交易日信号</span></div>
+            <div class="portfolio-chart-shell">
+              <div class="portfolio-hover-card" id="portfolio-hover">
+                <h4>2026-06-03 收盘</h4>
+                <p><b>当日收盘持仓：</b>贵州茅台、中国平安、招商银行、宁德时代、隆基绿能</p>
+                <p><b>下一交易日信号：</b>买入美的集团，卖出隆基绿能，保留其余持仓</p>
+              </div>
+              <div class="chart">
               <svg viewBox="0 0 720 260" preserveAspectRatio="none">
                 <line x1="0" y1="220" x2="720" y2="220" stroke="#ded7ca"/>
                 <line x1="0" y1="160" x2="720" y2="160" stroke="#ded7ca"/>
                 <line x1="0" y1="100" x2="720" y2="100" stroke="#ded7ca"/>
+                <g opacity=".82">
+                  <line x1="70" y1="166" x2="70" y2="218" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="60" y="178" width="20" height="36" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-05-28" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="保留前五持仓，无新增买卖"/>
+                  <line x1="150" y1="142" x2="150" y2="196" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="140" y="154" width="20" height="34" rx="2" fill="#f2d9d6" stroke="#c9473f" data-date="2026-05-29" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="观察立讯精密，未进入目标持仓"/>
+                  <line x1="230" y1="132" x2="230" y2="188" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="220" y="144" width="20" height="38" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-02" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="买入美的集团待确认，隆基绿能接近卖出边界"/>
+                  <line x1="310" y1="112" x2="310" y2="172" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="300" y="124" width="20" height="44" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-03" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="买入美的集团，卖出隆基绿能，保留其余持仓"/>
+                  <line x1="390" y1="104" x2="390" y2="160" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="380" y="118" width="20" height="38" rx="2" fill="#f2d9d6" stroke="#c9473f" data-date="2026-06-04" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、美的集团" data-signal="保留 Top5，观察立讯精密"/>
+                  <line x1="470" y1="92" x2="470" y2="150" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="460" y="102" width="20" height="40" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-05" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、美的集团" data-signal="无卖出，缓冲区稳定"/>
+                  <line x1="550" y1="84" x2="550" y2="142" stroke="#7f8a86" stroke-width="2"/>
+                  <rect class="hover-day" x="540" y="96" width="20" height="36" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-06" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、美的集团" data-signal="下一交易日继续保留，等待 9:00 信号批次"/>
+                </g>
                 <path d="M0 215 C50 210 85 185 125 192 S205 162 260 170 S360 112 414 120 S510 76 572 84 S642 56 720 38" fill="none" stroke="#2369b3" stroke-width="4"/>
                 <path d="M0 214 C74 218 120 198 170 204 S270 176 342 188 S460 140 520 152 S626 124 720 132" fill="none" stroke="#8a938e" stroke-width="3"/>
-                <path d="M0 238 C120 242 180 232 250 238 S360 224 420 230 S540 212 608 218 S680 206 720 210" fill="none" stroke="#c9473f" stroke-width="2"/>
               </svg>
+              </div>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><h3>回测条件</h3><span>可复现配置</span></div>
+            <div class="panel-head"><h3>组合口径</h3><span>回测与实盘统一字段</span></div>
             <div class="panel-body">
               <div class="kv">
                 <div><span>股票池</span><b>全 A 可交易池</b></div>
@@ -1241,6 +1410,7 @@
                 <div><span>缓冲范围</span><b id="bt-buffer">Top15</b></div>
                 <div><span>调仓频率</span><b>每日评估</b></div>
                 <div><span>交易频次</span><b>月均 7.4 笔</b></div>
+                <div><span>平均持仓天数</span><b>8.7 天</b></div>
                 <div><span>成本与滑点</span><b>0.12% + 0.05%</b></div>
               </div>
             </div>
@@ -1294,45 +1464,57 @@
       </section>
     </main>
 
-    <aside class="right" aria-label="个股详情">
+    <aside class="right" aria-label="今日选股结果">
       <div class="panel">
+        <div class="panel-head"><h3>今日选股结果</h3><span>9:00 信号批次</span></div>
         <div class="panel-body">
-          <div class="detail-title">
-            <div>
-              <h2 id="detail-name">宁德时代</h2>
-              <p id="detail-code">300750.SZ · 创业板 · 可交易</p>
+          <div class="side-signal-list">
+            <div class="side-signal-row selected" data-signal-code="300750.SZ">
+              <div class="line"><b>宁德时代</b><span class="tag green">买入</span></div>
+              <div class="line"><span>300750.SZ · Top1</span><b>198.20 - 202.60</b></div>
             </div>
-            <span class="tag green" id="detail-action">买入</span>
+            <div class="side-signal-row" data-signal-code="600519.SH">
+              <div class="line"><b>贵州茅台</b><span class="tag green">保留</span></div>
+              <div class="line"><span>600519.SH · Top2</span><b>1298.40 - 1312.80</b></div>
+            </div>
+            <div class="side-signal-row" data-signal-code="000333.SZ">
+              <div class="line"><b>美的集团</b><span class="tag green">买入</span></div>
+              <div class="line"><span>000333.SZ · Top4</span><b>63.40 - 64.80</b></div>
+            </div>
+            <div class="side-signal-row" data-signal-code="601012.SH">
+              <div class="line"><b>隆基绿能</b><span class="tag red">卖出</span></div>
+              <div class="line"><span>601012.SH · Top24</span><b>18.20 - 18.80</b></div>
+            </div>
           </div>
         </div>
       </div>
       <div class="panel">
-        <div class="panel-head"><h3>当前策略关联数据</h3><span>as_of 2026-06-07</span></div>
+        <div class="panel-head"><h3>标的得分</h3><span id="detail-code">300750.SZ</span></div>
         <div class="panel-body">
+          <div class="detail-title">
+            <div>
+              <h2 id="detail-name">宁德时代</h2>
+              <p id="detail-range">198.20 - 202.60</p>
+            </div>
+            <span class="tag green" id="detail-action">买入</span>
+          </div>
           <div class="kv">
             <div><span>综合分</span><b id="detail-score">0.892</b></div>
-            <div><span>建议区间</span><b id="detail-range">198.20 - 202.60</b></div>
-            <div><span>目标仓位</span><b>20%</b></div>
-            <div><span>取消条件</span><b>高开 &gt; 2% 或涨停</b></div>
+            <div><span>当前排名</span><b id="detail-rank">Top1</b></div>
+            <div><span>当前状态</span><b id="detail-position">未持仓</b></div>
             <div><span>数据源</span><b>Tushare + TDX</b></div>
           </div>
         </div>
       </div>
       <div class="panel">
-        <div class="panel-head"><h3>因子贡献</h3><span>高分方向已统一</span></div>
+        <div class="panel-head"><h3>因子贡献明细</h3><span>高分方向已统一</span></div>
         <div class="panel-body">
-          <div class="contrib">
+          <div class="contrib" id="detail-contrib">
             <div class="contrib-row"><span>Alpha020</span><div class="bar"><i style="width:88%"></i></div><b>+0.21</b></div>
             <div class="contrib-row"><span>Alpha046</span><div class="bar"><i style="width:76%"></i></div><b>+0.18</b></div>
             <div class="contrib-row"><span>Alpha014</span><div class="bar"><i style="width:62%"></i></div><b>+0.13</b></div>
             <div class="contrib-row"><span>Alpha034</span><div class="bar"><i style="width:44%"></i></div><b>+0.09</b></div>
           </div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><h3>调仓解释</h3><span>人工执行参考</span></div>
-        <div class="panel-body">
-          <p id="detail-reason" style="margin:0;color:var(--muted);font-size:13px;line-height:1.65">Alpha020、Alpha046、尾盘强度贡献靠前</p>
         </div>
       </div>
     </aside>
@@ -1341,11 +1523,9 @@
   <script>
     const pageMeta = {
       dashboard: ['策略总览', '2026-06-08 09:00 信号批次 · Tushare 日频 + TDX 1m/5m/盘口派生特征'],
-      'factor-results': ['因子结果', '代码侧离线因子挖掘结果，前端只读展示评价指标'],
-      'factor-list': ['因子列表', '因子名称、计算公式、指标含义与受控评测'],
-      'factor-pool': ['因子池', 'IC、ICIR、覆盖率、相关性、换手成本和状态管理'],
+      'factor-list': ['因子列表', '因子名称、分类、LaTeX 公式、业务含义与评测指标'],
       strategy: ['策略配置', 'TopN、缓冲区、股票池过滤和 V1 等权因子框架'],
-      backtest: ['回测模块', '夏普、累计收益、最大回撤、交易频次、平均持仓天数'],
+      portfolio: ['Portfolio', '回测与实盘组合指标、策略收益曲线和沪深300 K 线'],
       signals: ['今日选股', '当日选股结果、持仓个股、全量标的综合得分和个股详情']
     };
 
@@ -1422,6 +1602,126 @@
       }
     };
 
+    const stockDetailData = {
+      '300750.SZ': {
+        name: '宁德时代',
+        code: '300750.SZ',
+        rank: 'Top1',
+        score: '0.892',
+        action: '买入',
+        tag: 'green',
+        range: '198.20 - 202.60',
+        position: '未持仓',
+        contrib: [
+          ['Alpha020', 88, '+0.21'],
+          ['Alpha046', 76, '+0.18'],
+          ['Alpha014', 62, '+0.13'],
+          ['Alpha034', 44, '+0.09']
+        ]
+      },
+      '600519.SH': {
+        name: '贵州茅台',
+        code: '600519.SH',
+        rank: 'Top2',
+        score: '0.841',
+        action: '保留',
+        tag: 'green',
+        range: '1298.40 - 1312.80',
+        position: '持仓',
+        contrib: [
+          ['Alpha014', 78, '+0.19'],
+          ['Alpha046', 69, '+0.15'],
+          ['Alpha020', 46, '+0.08'],
+          ['Alpha053', 38, '+0.06']
+        ]
+      },
+      '601318.SH': {
+        name: '中国平安',
+        code: '601318.SH',
+        rank: 'Top3',
+        score: '0.806',
+        action: '保留',
+        tag: 'green',
+        range: '44.10 - 45.20',
+        position: '持仓',
+        contrib: [
+          ['Alpha046', 72, '+0.17'],
+          ['Alpha034', 61, '+0.12'],
+          ['尾盘成交强度', 52, '+0.10'],
+          ['Alpha020', 36, '+0.05']
+        ]
+      },
+      '000333.SZ': {
+        name: '美的集团',
+        code: '000333.SZ',
+        rank: 'Top4',
+        score: '0.781',
+        action: '买入',
+        tag: 'green',
+        range: '63.40 - 64.80',
+        position: '未持仓',
+        contrib: [
+          ['Alpha014', 74, '+0.16'],
+          ['Alpha034', 64, '+0.13'],
+          ['Alpha046', 48, '+0.09'],
+          ['Alpha020', 40, '+0.07']
+        ]
+      },
+      '600036.SH': {
+        name: '招商银行',
+        code: '600036.SH',
+        rank: 'Top5',
+        score: '0.752',
+        action: '保留',
+        tag: 'green',
+        range: '36.10 - 36.90',
+        position: '持仓',
+        contrib: [
+          ['Alpha046', 70, '+0.15'],
+          ['Alpha014', 55, '+0.11'],
+          ['Alpha053', 45, '+0.08'],
+          ['Alpha020', 32, '+0.04']
+        ]
+      },
+      '002475.SZ': {
+        name: '立讯精密',
+        code: '002475.SZ',
+        rank: 'Top11',
+        score: '0.641',
+        action: '观察',
+        tag: 'amber',
+        range: '31.70 - 32.60',
+        position: '未持仓',
+        contrib: [
+          ['尾盘成交强度', 63, '+0.12'],
+          ['Alpha020', 42, '+0.07'],
+          ['Alpha046', 38, '+0.05'],
+          ['Alpha014', 26, '+0.03']
+        ]
+      },
+      '601012.SH': {
+        name: '隆基绿能',
+        code: '601012.SH',
+        rank: 'Top24',
+        score: '0.442',
+        action: '卖出',
+        tag: 'red',
+        range: '18.20 - 18.80',
+        position: '持仓',
+        contrib: [
+          ['Alpha020', 22, '-0.06'],
+          ['Alpha046', 18, '-0.08'],
+          ['Alpha014', 16, '-0.04'],
+          ['Alpha034', 14, '-0.03']
+        ]
+      }
+    };
+
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    };
+
     document.querySelectorAll('.nav button').forEach(button => {
       button.addEventListener('click', () => {
         document.querySelectorAll('.nav button').forEach(item => item.classList.remove('active'));
@@ -1438,8 +1738,10 @@
       button.addEventListener('click', () => {
         document.querySelectorAll('[data-top]').forEach(item => item.classList.remove('active'));
         button.classList.add('active');
-        document.getElementById('metric-top').textContent = button.dataset.top;
-        document.getElementById('bt-top').textContent = `Top${button.dataset.top}`;
+        setText('metric-top', button.dataset.top);
+        setText('bt-top', `Top${button.dataset.top}`);
+        setText('strategy-top', `Top${button.dataset.top}`);
+        setText('portfolio-top', button.dataset.top);
       });
     });
 
@@ -1447,24 +1749,64 @@
       button.addEventListener('click', () => {
         document.querySelectorAll('[data-buffer]').forEach(item => item.classList.remove('active'));
         button.classList.add('active');
-        document.getElementById('metric-buffer').textContent = button.dataset.buffer;
-        document.getElementById('bt-buffer').textContent = `Top${button.dataset.buffer}`;
+        setText('metric-buffer', button.dataset.buffer);
+        setText('bt-buffer', `Top${button.dataset.buffer}`);
+        setText('strategy-buffer', `Top${button.dataset.buffer}`);
+        setText('portfolio-buffer', button.dataset.buffer);
       });
     });
 
     const rows = Array.from(document.querySelectorAll('#stock-table tbody tr'));
+    const sideRows = Array.from(document.querySelectorAll('.side-signal-row'));
+    const renderStockDetail = code => {
+      const data = stockDetailData[code];
+      if (!data) return;
+      setText('detail-name', data.name);
+      setText('detail-code', data.code);
+      setText('detail-score', data.score);
+      setText('detail-range', data.range);
+      setText('detail-rank', data.rank);
+      setText('detail-position', data.position);
+      const action = document.getElementById('detail-action');
+      action.textContent = data.action;
+      action.className = `tag ${data.tag}`;
+      document.getElementById('detail-contrib').innerHTML = data.contrib.map(([name, width, value]) => (
+        `<div class="contrib-row"><span>${name}</span><div class="bar"><i style="width:${width}%"></i></div><b>${value}</b></div>`
+      )).join('');
+    };
+
+    const selectStock = code => {
+      rows.forEach(item => item.classList.toggle('selected', item.dataset.code === code));
+      sideRows.forEach(item => item.classList.toggle('selected', item.dataset.signalCode === code));
+      renderStockDetail(code);
+    };
+
     rows.forEach(row => {
       row.addEventListener('click', () => {
-        rows.forEach(item => item.classList.remove('selected'));
-        row.classList.add('selected');
-        document.getElementById('detail-name').textContent = row.dataset.name;
-        document.getElementById('detail-code').textContent = `${row.dataset.code} · 当前策略可交易标的`;
-        document.getElementById('detail-score').textContent = row.dataset.score;
-        document.getElementById('detail-range').textContent = row.dataset.range;
-        document.getElementById('detail-reason').textContent = row.dataset.reason;
-        const action = document.getElementById('detail-action');
-        action.textContent = row.dataset.action;
-        action.className = 'tag ' + (row.dataset.action === '卖出' ? 'red' : row.dataset.action === '观察' ? 'amber' : 'green');
+        selectStock(row.dataset.code);
+      });
+    });
+
+    sideRows.forEach(row => {
+      row.addEventListener('click', () => {
+        selectStock(row.dataset.signalCode);
+      });
+    });
+
+    document.querySelectorAll('[data-portfolio-mode]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-portfolio-mode]').forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.hover-day').forEach(day => {
+      day.addEventListener('mouseenter', () => {
+        document.getElementById('portfolio-hover').innerHTML = `
+          <h4>${day.dataset.date} 收盘</h4>
+          <p><b>当日收盘持仓：</b>${day.dataset.holdings}</p>
+          <p><b>下一交易日信号：</b>${day.dataset.signal}</p>
+        `;
       });
     });
 

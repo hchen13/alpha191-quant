@@ -68,13 +68,12 @@ docs/alpha191-workbench-prototype.html
 The prototype covers:
 
 - Strategy overview
-- Offline factor discovery result display
-- Factor list with a controlled evaluation trigger
-- Factor pool evaluation
-- Strategy configuration
-- Backtesting metrics
+- Factor list with LaTeX-style formulas and a controlled evaluation trigger
+- Strategy configuration for Top5/Top10 selection and Top10/Top15 buffers
+- Portfolio view for backtest and live portfolio metrics
+- Strategy return curve overlaid with CSI 300 candlesticks
 - Daily stock selection
-- Per-stock detail view
+- Right sidebar for daily signal actions and selected-stock factor contributions
 
 The UI remains a data viewing workbench. It may trigger factor evaluation through the approved evaluation tool, but it does not provide online factor generation, editing, mining, or submission.
 
