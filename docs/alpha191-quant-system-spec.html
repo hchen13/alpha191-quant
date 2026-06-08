@@ -555,6 +555,44 @@
       font-size: 13px;
     }
 
+    .app { grid-template-columns: 360px minmax(0, 1fr); }
+    .sidebar { padding: 30px 24px; }
+    body { font-size: 22.5px; line-height: 1.58; }
+    .mark { width: 51px; height: 51px; font-size: 21px; }
+    .brand h1 { font-size: 22.5px; }
+    .brand span { font-size: 18px; }
+    .nav { gap: 10px; }
+    .nav a { padding: 12px 14px; font-size: 19.5px; }
+    .side-note { font-size: 18px; }
+    main { padding: 42px clamp(30px, 4vw, 72px) 72px; }
+    .hero { grid-template-columns: minmax(0, 1fr) 460px; gap: 32px; }
+    .eyebrow { font-size: 18px; }
+    .hero h2 { font-size: clamp(42px, 5vw, 72px); }
+    .hero p { font-size: 24px; }
+    .status-panel { padding: 22px; }
+    .status-row { font-size: 19.5px; padding: 13px 0; }
+    section h3 { font-size: 36px; }
+    .panel { padding: 22px; }
+    .panel h4 { font-size: 22.5px; }
+    .panel p, .panel li { font-size: 19.5px; }
+    .tag { min-height: 39px; padding: 5px 14px; font-size: 18px; }
+    .flow { grid-template-columns: repeat(6, minmax(180px, 1fr)); gap: 14px; }
+    .flow .step { min-height: 168px; padding: 18px; }
+    .step .num { width: 39px; height: 39px; font-size: 18px; }
+    .step b { font-size: 19.5px; }
+    .step span { font-size: 18px; }
+    th, td { padding: 15px 16px; font-size: 19.5px; }
+    th { font-size: 18px; }
+    .tab-btn, .copy-btn { min-height: 51px; padding: 9px 16px; font-size: 19.5px; }
+    .milestone { grid-template-columns: 130px minmax(0, 1fr) 300px; padding: 20px; }
+    .milestone .phase { font-size: 19.5px; }
+    .milestone h4 { font-size: 22.5px; }
+    .milestone p { font-size: 19.5px; }
+    .milestone ul { font-size: 18px; }
+    .prebox { padding: 20px; font-size: 18px; }
+    .copy-status { font-size: 18px; }
+    .references { font-size: 19.5px; }
+
     @media (max-width: 1180px) {
       .hero { grid-template-columns: 1fr; }
       .grid-3 { grid-template-columns: 1fr 1fr; }
