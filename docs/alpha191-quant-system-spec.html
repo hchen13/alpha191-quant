@@ -973,11 +973,17 @@
             <h4>核心交互</h4>
             <ul>
               <li>Top5/Top10 选股数量、Top10/Top15 缓冲范围和筛选条件统一放入策略配置模块，不放在总览顶部。</li>
-              <li>因子列表合并原因子结果与因子池信息，统一展示因子名称、分类、LaTeX 公式、业务含义、Rank IC、ICIR、覆盖率、换手成本和状态。</li>
+              <li>总览页只展示策略基础描述和组合回撤相关内容，不展示数据健康、存储格式、价格编码等工程状态。</li>
+              <li>因子列表合并原因子结果与因子池信息，统一展示因子名称、分类、公式、业务含义、Rank IC、ICIR、覆盖率、换手成本和状态；公式字段必须补充变量和函数释义。</li>
               <li>因子评测数据默认隐藏；点击评测按钮后调用 <code>evaluate-factor --factor &lt;factor_id&gt;</code> 或后端等价工具，完成后展示 IC、ICIR、覆盖率、分组收益和换手成本。</li>
               <li>前端是展示看板；唯一允许的触发型操作是受控因子评测，不提供在线因子生成、挖掘、编辑或提交入口。</li>
+              <li>策略配置页保留现有因子权重配置板块，TopN、缓冲范围和筛选条件仍统一放在策略配置模块。</li>
               <li>Portfolio 模块区分回测与实盘场景，统一展示收益、最大回撤、夏普比率、胜率、平均持仓天数等组合核心指标。</li>
-              <li>Portfolio 图表叠加策略收益曲线与沪深 300 K 线；悬浮单个交易日 K 线时展示当日收盘持仓和下一交易日调仓信号。</li>
+              <li>Portfolio 图表必须接入标准 TradingView K 线组件，不自定义绘制 K 线；图表叠加策略收益曲线与沪深 300 K 线，时间范围从策略启动日开始。</li>
+              <li>TradingView 图表必须支持滚轮缩放；可视区变化时按策略启动日边界动态加载行情，确保当前可视范围数据完整。</li>
+              <li>Portfolio 参考 TradingView Pine Script 的策略指标体系补充净利润、毛利润、毛亏损、Profit Factor、Sortino、信息比率、交易次数、平均每笔、组合暴露和换手率。</li>
+              <li>悬浮单个交易日 K 线时，当日收盘持仓和下一交易日调仓信号固定展示在图表右侧或其他空余区域，不遮挡 K 线图形。</li>
+              <li>开盘时段按合规固定频率拉取选股列表的 TDX 实时行情并渲染页面；界面展示轮询状态、刷新时间、节流状态，并在预设条件触发时主动展示信号提醒。</li>
               <li>选股页面展示当日选股、当前持仓、全量标的综合得分；右侧侧栏展示今日选股结果与操作建议，点击标的后展示综合分和各因子贡献明细。</li>
               <li>右侧侧栏不展示固定单只个股冗余内容，不提供调仓解释模块；V1 暂不做归因解读。</li>
             </ul>
@@ -986,7 +992,7 @@
         <div class="legacy-ui-mock" hidden>
         <div class="tabs" role="tablist">
           <button class="tab-btn active" data-tab="desk">每日信号</button>
-          <button class="tab-btn" data-tab="datahealth">数据健康</button>
+          <button class="tab-btn" data-tab="drawdown">组合回撤</button>
           <button class="tab-btn" data-tab="factorlab">因子研究</button>
           <button class="tab-btn" data-tab="backtest">回测</button>
         </div>
@@ -1027,20 +1033,20 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="tab-datahealth">
+          <div class="tab-pane" id="tab-drawdown">
             <div class="mock-grid">
               <div class="mock-left">
-                <div class="mock-card"><h5>Tushare</h5><p>daily · daily_basic · adj_factor · stk_limit · industry</p></div>
-                <div class="mock-card"><h5>TDX</h5><p>1m/5m · 五档盘口 · 分时 · 服务器探测</p></div>
-                <div class="mock-card"><h5>公开源</h5><p>腾讯 realtime · 东财 kline/资金流 · 巨潮公告</p></div>
+                <div class="mock-card"><h5>当前回撤</h5><p>-3.4% · 未触发降仓，仅进入观察。</p></div>
+                <div class="mock-card"><h5>最大回撤</h5><p>-12.6% · 发生于 2025-09-18 至 2025-10-14。</p></div>
+                <div class="mock-card"><h5>回撤约束</h5><p>单日新增买入不超过 2 只；持仓跌出 Top15 才卖出。</p></div>
               </div>
               <div class="mock-main">
-                <div class="mock-card"><h5>覆盖率</h5><div class="mini-bars"><i style="height:78%"></i><i style="height:80%"></i><i style="height:86%"></i><i style="height:91%"></i><i style="height:84%"></i><i style="height:93%"></i><i style="height:89%"></i><i style="height:95%"></i><i style="height:90%"></i><i style="height:92%"></i><i style="height:94%"></i><i style="height:88%"></i><i style="height:96%"></i><i style="height:93%"></i></div></div>
-                <div class="mock-card"><h5>对账</h5><p>TDX 1m 聚合日线 vs Tushare daily：价格误差、成交量单位、成交额单位、缺 bar 明细。</p></div>
+                <div class="mock-card"><h5>回撤分布</h5><div class="mini-bars"><i style="height:24%"></i><i style="height:35%"></i><i style="height:58%"></i><i style="height:42%"></i><i style="height:64%"></i><i style="height:82%"></i><i style="height:56%"></i><i style="height:40%"></i><i style="height:32%"></i><i style="height:76%"></i><i style="height:50%"></i><i style="height:38%"></i><i style="height:46%"></i><i style="height:28%"></i></div></div>
+                <div class="mock-card"><h5>恢复周期</h5><p>最长恢复 36 个交易日；当前恢复周期 7 个交易日。</p></div>
               </div>
               <div class="mock-right">
-                <div class="mock-card"><h5>异常队列</h5><p>缺失复权因子 0 · 主键重复 0 · 东财请求节流 1100ms · TDX 超时 2 个节点</p></div>
-                <div class="mock-card"><h5>最近刷新</h5><p>日频 17:30 · 分钟线 09:35/10:30/14:55 · 报告 18:00</p></div>
+                <div class="mock-card"><h5>风险提示</h5><p>若组合回撤超过 10%，次日只允许卖出和保留，不新增买入。</p></div>
+                <div class="mock-card"><h5>执行状态</h5><p>当前仍按 Top5/Top15 规则执行，不触发组合级暂停。</p></div>
               </div>
             </div>
           </div>
@@ -1168,12 +1174,18 @@
               <li>UI 是独立完整页面，不是文档内局部区块。</li>
               <li>实际前端页面结构与 <code>docs/alpha191-workbench-prototype.html</code> 保持一致。</li>
               <li>总览、因子列表、策略配置、Portfolio、今日选股页面可访问。</li>
+              <li>总览页只保留策略基础描述和回撤相关内容，不出现数据健康、存储格式、价格编码等非核心信息。</li>
               <li>图表和表格读取真实 mart 数据，不使用硬编码 demo。</li>
-              <li>因子列表包含名称、分类、LaTeX 公式、业务含义、Rank IC、ICIR、覆盖率、换手成本和状态；评测数据初始默认隐藏。</li>
+              <li>因子列表包含名称、分类、公式、业务含义、Rank IC、ICIR、覆盖率、换手成本和状态；公式内变量和函数有统一释义，评测数据初始默认隐藏。</li>
               <li>因子评测按钮调用 <code>evaluate-factor</code> 或后端等价工具，完成后展示 IC、ICIR、覆盖率、分组收益、相关性和换手成本。</li>
               <li>前端不提供在线因子生成、挖掘、编辑或提交入口；因子评测是唯一允许的受控触发操作。</li>
               <li>Top5/Top10 选股数量和 Top10/Top15 缓冲范围只在策略配置模块中配置，不在总览顶部出现。</li>
-              <li>Portfolio 同时支持回测与实盘口径，展示核心指标、策略收益曲线和沪深 300 K 线，悬浮 K 线能显示当日收盘持仓和下一交易日调仓信号。</li>
+              <li>策略配置页保留因子权重配置板块，布局不因本轮改动被重排。</li>
+              <li>Portfolio 同时支持回测与实盘口径，使用标准 TradingView K 线组件展示沪深 300 K 线并叠加策略收益曲线，不使用自绘 K 线。</li>
+              <li>TradingView 图表支持滚轮缩放，缩放或拖动可视区时能动态加载缺失行情，且左侧边界不早于策略启动时间。</li>
+              <li>Portfolio 补充净利润、毛利润、毛亏损、Profit Factor、Sortino、信息比率、交易次数、平均每笔、平均持仓、组合暴露和换手率等策略指标。</li>
+              <li>悬浮 K 线能在图表空余区域显示当日收盘持仓和下一交易日调仓信号，不遮挡 K 线主体。</li>
+              <li>今日选股页展示 TDX 实时行情轮询状态、刷新时间、节流状态和触发信号提醒。</li>
               <li>右侧侧栏展示今日选股结果与操作建议；点击标的后展示综合分和因子贡献明细，不展示固定个股冗余内容和调仓解释模块。</li>
               <li>移动端不重叠，桌面端信息密度足够。</li>
             </ul>
@@ -1211,9 +1223,15 @@
 - 因子池必须支持 candidate、watch、active、paused、retired；代码侧候选因子不得绕过评价直接 active。
 - 每个 milestone 都补最小必要测试和验证命令。
 - UI 必须按 docs/alpha191-workbench-prototype.html 实现独立完整展示看板，并接真实数据 mart；页面层级为总览、因子列表、策略配置、Portfolio、今日选股。
-- 因子列表必须合并原因子结果与因子池信息，使用 LaTeX 公式展示因子表达式，并支持受控调用 evaluate-factor 或后端等价工具刷新评测结果。
+- 总览页只展示策略基础描述和组合回撤相关内容，不展示数据健康、存储格式、价格编码等非核心信息。
+- 因子列表必须合并原因子结果与因子池信息，栏目名称使用“公式”，展示因子表达式、业务含义、评测指标，并为公式内变量和函数提供统一释义；支持受控调用 evaluate-factor 或后端等价工具刷新评测结果。
 - Top5/Top10 选股数量与 Top10/Top15 缓冲范围只能放在策略配置模块。
-- Portfolio 必须区分回测与实盘，叠加展示策略收益曲线和沪深 300 K 线，并支持交易日悬浮查看收盘持仓和下一交易日调仓信号。
+- 策略配置页必须保留现有因子权重配置板块，布局不因本轮 UI 调整重排。
+- Portfolio 必须区分回测与实盘，接入标准 TradingView K 线组件展示沪深 300 K 线并叠加策略收益曲线，不允许自定义绘制 K 线。
+- TradingView 图表必须支持滚轮缩放；缩放或拖动可视范围时动态加载行情数据，确保可视区完整，且时间范围从策略启动日开始。
+- Portfolio 必须参考 TradingView Pine Script 策略评价口径补充净利润、毛利润、毛亏损、Profit Factor、Sortino、信息比率、交易次数、平均每笔、平均持仓、组合暴露和换手率等指标。
+- 悬浮交易日 K 线时，收盘持仓和下一交易日调仓信号必须展示在图表空余区域，不能遮挡 K 线图形。
+- 开盘时段必须按合规固定频率拉取选股列表的 TDX 实时行情并渲染页面；界面展示轮询状态、刷新时间、节流状态，并在预设条件触发时主动展示信号提醒。
 - 右侧侧栏必须展示今日选股结果与操作建议；点击标的后展示综合分和因子贡献明细，不做调仓解释归因。
 - UI 不得提供在线因子生成、挖掘、编辑或提交入口；因子评测是唯一允许的前端触发型操作。
 - 危险操作必须按 AGENTS.md 停下来确认。

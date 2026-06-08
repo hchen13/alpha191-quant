@@ -68,11 +68,14 @@ docs/alpha191-workbench-prototype.html
 The prototype covers:
 
 - Strategy overview
-- Factor list with LaTeX-style formulas and a controlled evaluation trigger
+- Factor list with formulas, a formula variable/function glossary, and a controlled evaluation trigger
 - Strategy configuration for Top5/Top10 selection and Top10/Top15 buffers
 - Portfolio view for backtest and live portfolio metrics
-- Strategy return curve overlaid with CSI 300 candlesticks
+- TradingView-based CSI 300 candlestick chart overlaid with the strategy return curve
+- Mouse-wheel zoom, visible-range loading contract, and strategy-start aligned chart range
+- Portfolio strategy metrics inspired by TradingView Pine Script reports
 - Daily stock selection
+- Realtime TDX quote polling status and signal alerts for the selected stock list
 - Right sidebar for daily signal actions and selected-stock factor contributions
 
 The UI remains a data viewing workbench. It may trigger factor evaluation through the approved evaluation tool, but it does not provide online factor generation, editing, mining, or submission.

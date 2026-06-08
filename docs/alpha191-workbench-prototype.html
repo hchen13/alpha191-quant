@@ -198,15 +198,18 @@
     }
 
     .date-chip {
-      height: 36px;
+      min-height: 36px;
       display: inline-flex;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
       color: var(--muted);
-      padding: 0 12px;
+      padding: 8px 12px;
       font-size: 13px;
+      line-height: 1.35;
     }
 
     .page {
@@ -765,7 +768,7 @@
 
     .backtest-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+      grid-template-columns: 1fr;
       gap: 12px;
     }
 
@@ -779,42 +782,198 @@
     }
 
     .portfolio-chart-shell {
-      position: relative;
-      min-height: 320px;
+      min-height: 430px;
     }
 
-    .portfolio-chart-shell .chart {
-      height: 320px;
+    .portfolio-chart-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: stretch;
     }
 
-    .hover-day {
-      cursor: pointer;
-    }
-
-    .portfolio-hover-card {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      width: min(320px, calc(100% - 36px));
+    .tradingview-chart {
+      min-height: 430px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: rgba(255, 254, 250, .96);
-      box-shadow: var(--shadow);
-      padding: 12px;
-      pointer-events: none;
-      z-index: 2;
+      background: #10161c;
+      overflow: hidden;
+      position: relative;
     }
 
-    .portfolio-hover-card h4 {
-      margin: 0 0 8px;
+    .tradingview-fallback {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: #dce4e2;
+      text-align: center;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(180deg, rgba(255,255,255,.05) 1px, transparent 1px) 0 0 / 48px 48px,
+        #10161c;
+    }
+
+    .tradingview-fallback b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .tradingview-fallback span {
+      color: #aeb9b6;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .portfolio-day-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .portfolio-day-panel h4 {
+      margin: 0;
       font-size: 14px;
     }
 
-    .portfolio-hover-card p {
+    .portfolio-day-panel p {
       margin: 4px 0;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.5;
+    }
+
+    .tv-contract {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .tv-contract div {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tv-contract b {
+      color: var(--text);
+      min-width: 0;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .portfolio-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .indicator-tile {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      padding: 10px;
+    }
+
+    .indicator-tile span {
+      display: block;
+      color: var(--soft);
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .indicator-tile b {
+      font-size: 15px;
+    }
+
+    .formula-legend {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+    }
+
+    .formula-legend div {
+      display: grid;
+      gap: 2px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      padding: 10px;
+    }
+
+    .formula-legend b {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+    }
+
+    .formula-legend span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .quote-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px var(--green-soft);
+    }
+
+    .signal-alert {
+      border: 1px solid #efc7c3;
+      background: var(--red-soft);
+      color: #7d2924;
+      border-radius: 8px;
+      padding: 12px;
+      display: grid;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .signal-alert b {
+      color: var(--red);
+    }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .quote-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      padding: 10px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .quote-card b {
+      font-size: 13px;
+    }
+
+    .quote-card span {
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .side-signal-list {
@@ -886,7 +1045,7 @@
     .title p { font-size: 19.5px; }
     .seg { height: 54px; }
     .seg button { min-width: 105px; padding: 0 18px; font-size: 22.5px; }
-    .date-chip { height: 54px; padding: 0 18px; font-size: 19.5px; }
+    .date-chip { min-height: 54px; padding: 10px 18px; font-size: 19.5px; }
     .panel-head { min-height: 69px; padding: 18px 21px; }
     .panel-head h3 { font-size: 21px; }
     .panel-head span { font-size: 18px; }
@@ -920,8 +1079,13 @@
     .factor-list-table tbody { gap: 15px; padding: 18px; }
     .factor-list-table tr { gap: 15px 24px; padding: 21px; }
     .factor-list-table td::before { font-size: 18px; }
-    .portfolio-hover-card h4 { font-size: 21px; }
-    .portfolio-hover-card p, .side-signal-row span { font-size: 18px; }
+    .portfolio-day-panel h4 { font-size: 21px; }
+    .portfolio-day-panel p, .side-signal-row span { font-size: 18px; }
+    .tradingview-fallback b { font-size: 24px; }
+    .tradingview-fallback span, .tv-contract div, .formula-legend span, .quote-status, .quote-card span { font-size: 18px; }
+    .indicator-tile span { font-size: 16.5px; }
+    .indicator-tile b { font-size: 22.5px; }
+    .quote-card b { font-size: 19.5px; }
     .side-signal-row { padding: 15px; gap: 9px; }
     .side-signal-row b { font-size: 19.5px; }
 
@@ -959,6 +1123,7 @@
       .grid-3,
       .grid-2,
       .backtest-grid,
+      .portfolio-chart-grid,
       .flowline,
       .setting-row {
         grid-template-columns: 1fr;
@@ -991,6 +1156,12 @@
       }
 
       .factor-inline-metrics .factor-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .formula-legend,
+      .portfolio-metrics-grid,
+      .quote-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -1029,24 +1200,24 @@
       <section class="page active" id="dashboard">
         <div class="grid-4">
           <div class="panel metric">
+            <div class="label">策略类型</div>
+            <div class="value"><b>日频</b></div>
+            <div class="hint">A 股长多多因子选股</div>
+          </div>
+          <div class="panel metric">
             <div class="label">目标持仓</div>
             <div class="value"><b id="metric-top">5</b><span>只</span></div>
             <div class="hint">默认等权，每只约 20%</div>
           </div>
           <div class="panel metric">
-            <div class="label">卖出缓冲</div>
-            <div class="value"><b id="metric-buffer">15</b><span>名</span></div>
-            <div class="hint">跌出缓冲才进入卖出候选</div>
+            <div class="label">最大回撤</div>
+            <div class="value"><b class="down">-12.6%</b></div>
+            <div class="hint">回测期组合权益峰谷</div>
           </div>
           <div class="panel metric">
-            <div class="label">可交易股票池</div>
-            <div class="value"><b>4218</b><span>只</span></div>
-            <div class="hint">已剔除 ST、停牌、低流动性</div>
-          </div>
-          <div class="panel metric">
-            <div class="label">active 因子</div>
-            <div class="value"><b>10</b><span>个</span></div>
-            <div class="hint">Alpha191 首批量价因子</div>
+            <div class="label">当前回撤</div>
+            <div class="value"><b class="down">-3.4%</b></div>
+            <div class="hint">最近信号批次权益回撤</div>
           </div>
         </div>
 
@@ -1070,34 +1241,31 @@
         <div class="grid-2" style="margin-top:12px">
           <div class="panel">
             <div class="panel-head">
-              <h3>组合回测摘要</h3>
-              <span>成本 0.12% · T+1 · Top5/Top15</span>
+              <h3>组合回撤分布</h3>
+              <span>回测期按权益峰谷统计</span>
             </div>
-            <div class="chart">
-              <svg viewBox="0 0 720 260" preserveAspectRatio="none" aria-label="累计收益曲线">
-                <line x1="0" y1="218" x2="720" y2="218" stroke="#ded7ca"/>
-                <line x1="0" y1="156" x2="720" y2="156" stroke="#ded7ca"/>
-                <line x1="0" y1="94" x2="720" y2="94" stroke="#ded7ca"/>
-                <path d="M0 214 C70 208 95 190 138 197 S220 175 260 154 S340 132 384 142 S468 94 520 86 S625 52 720 42" fill="none" stroke="#2369b3" stroke-width="4"/>
-                <path d="M0 216 C88 206 132 204 182 186 S294 162 348 166 S454 126 512 118 S612 98 720 84" fill="none" stroke="#8a938e" stroke-width="3"/>
-              </svg>
+            <div class="panel-body">
+              <div class="kv">
+                <div><span>最大回撤</span><b class="down">-12.6%</b></div>
+                <div><span>回撤持续天数</span><b>41 天</b></div>
+                <div><span>5% 以上回撤次数</span><b>6 次</b></div>
+                <div><span>最长修复时间</span><b>58 天</b></div>
+                <div><span>当前回撤</span><b class="down">-3.4%</b></div>
+              </div>
             </div>
           </div>
           <div class="panel">
             <div class="panel-head">
-              <h3>数据健康</h3>
-              <span>压缩存储与已确认接口能力</span>
+              <h3>回撤控制规则</h3>
+              <span>人工执行前置约束</span>
             </div>
             <div class="panel-body">
               <div class="kv">
-                <div><span>Tushare 日线增量</span><b class="up">完成</b></div>
-                <div><span>TDX 1m 聚合对账</span><b class="up">通过</b></div>
-                <div><span>盘口快照覆盖率</span><b>91.8%</b></div>
-                <div><span>存储格式</span><b>Parquet + ZSTD</b></div>
-                <div><span>价格编码</span><b>int32 分</b></div>
-                <div><span>缓存命中率</span><b>96.4%</b></div>
-                <div><span>多标的单日批量</span><b class="up">已确认</b></div>
-                <div><span>offset + limit 分页</span><b class="up">已确认</b></div>
+                <div><span>单日新增买入</span><b>最多 2 只</b></div>
+                <div><span>个股目标仓位</span><b>约 20%</b></div>
+                <div><span>组合缓冲</span><b>跌出 Top<span id="metric-buffer">15</span> 才卖</b></div>
+                <div><span>涨跌停处理</span><b>不可成交则顺延</b></div>
+                <div><span>人工复核</span><b>9:30 前确认</b></div>
               </div>
             </div>
           </div>
@@ -1113,13 +1281,13 @@
           <div class="table-wrap">
             <table class="factor-list-table">
               <thead>
-                <tr><th>因子名称</th><th>分类</th><th>LaTeX 公式</th><th>业务含义</th><th>评测指标</th><th>评测</th></tr>
+                <tr><th>因子名称</th><th>分类</th><th>公式</th><th>业务含义</th><th>评测指标</th><th>评测</th></tr>
               </thead>
               <tbody>
                 <tr data-factor-row="Alpha014">
                   <td data-label="因子名称">Alpha014</td>
                   <td data-label="分类">量价</td>
-                  <td class="formula-cell" data-label="LaTeX 公式">
+                  <td class="formula-cell" data-label="公式">
                     <div class="latex-formula"><span>C<sub>t</sub> - C<sub>t-5</sub></span></div>
                     <div class="latex-source">C_t - C_{t-5}</div>
                   </td>
@@ -1138,7 +1306,7 @@
                 <tr data-factor-row="Alpha020">
                   <td data-label="因子名称">Alpha020</td>
                   <td data-label="分类">量价</td>
-                  <td class="formula-cell" data-label="LaTeX 公式">
+                  <td class="formula-cell" data-label="公式">
                     <div class="latex-formula">
                       <span class="fraction">
                         <span class="top">C<sub>t</sub> - C<sub>t-6</sub></span>
@@ -1163,7 +1331,7 @@
                 <tr data-factor-row="Alpha046">
                   <td data-label="因子名称">Alpha046</td>
                   <td data-label="分类">量价</td>
-                  <td class="formula-cell" data-label="LaTeX 公式">
+                  <td class="formula-cell" data-label="公式">
                     <div class="latex-formula">
                       <span class="fraction">
                         <span class="top"><span class="fn">MA</span><sub>3</sub>(C) + <span class="fn">MA</span><sub>6</sub>(C) + <span class="fn">MA</span><sub>12</sub>(C) + <span class="fn">MA</span><sub>24</sub>(C)</span>
@@ -1187,7 +1355,7 @@
                 <tr data-factor-row="close_volume_pressure">
                   <td data-label="因子名称">尾盘成交强度</td>
                   <td data-label="分类">日内派生</td>
-                  <td class="formula-cell" data-label="LaTeX 公式">
+                  <td class="formula-cell" data-label="公式">
                     <div class="latex-formula">
                       <span class="fraction">
                         <span class="top"><span class="sum-term"><span class="sigma">&sum;</span><span class="limits"><span>15:00</span><span>14:30</span></span></span>A<sub>1m</sub></span>
@@ -1211,7 +1379,7 @@
                 <tr data-factor-row="orderbook_pressure_persistence">
                   <td data-label="因子名称">盘口压力持续度</td>
                   <td data-label="分类">盘口派生</td>
-                  <td class="formula-cell" data-label="LaTeX 公式">
+                  <td class="formula-cell" data-label="公式">
                     <div class="latex-formula">
                       <span class="fn">MA</span><sub>20</sub>
                       <span>(</span>
@@ -1237,6 +1405,20 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <div class="panel-head"><h3>公式变量与函数释义</h3><span>统一字段口径</span></div>
+          <div class="panel-body">
+            <div class="formula-legend">
+              <div><b>C<sub>t</sub></b><span>第 t 个交易日的复权收盘价。</span></div>
+              <div><b>C<sub>t-k</sub></b><span>第 t-k 个交易日的复权收盘价，例如 C<sub>t-5</sub> 是 5 个交易日前收盘价。</span></div>
+              <div><b>MA<sub>n</sub>(C)</b><span>收盘价 C 的 n 日简单移动平均。</span></div>
+              <div><b>A<sub>1m</sub></b><span>1 分钟成交额，用于日内成交结构因子。</span></div>
+              <div><b>B<sub>1:5</sub></b><span>买一到买五五档挂单量合计。</span></div>
+              <div><b>S<sub>1:5</sub></b><span>卖一到卖五五档挂单量合计。</span></div>
+            </div>
           </div>
         </div>
 
@@ -1365,39 +1547,54 @@
           <div class="panel metric"><div class="label">夏普比率</div><div class="value"><b>1.24</b></div><div class="hint">日频年化</div></div>
           <div class="panel metric"><div class="label">胜率</div><div class="value"><b>54.8%</b></div><div class="hint">按调仓周期统计</div></div>
         </div>
+        <div class="portfolio-metrics-grid" style="margin-top:12px">
+          <div class="indicator-tile"><span>净利润</span><b class="up">+32.8%</b></div>
+          <div class="indicator-tile"><span>毛利润</span><b class="up">+48.6%</b></div>
+          <div class="indicator-tile"><span>毛亏损</span><b class="down">-15.8%</b></div>
+          <div class="indicator-tile"><span>Profit Factor</span><b>3.08</b></div>
+          <div class="indicator-tile"><span>Sortino Ratio</span><b>1.76</b></div>
+          <div class="indicator-tile"><span>信息比率</span><b>0.61</b></div>
+          <div class="indicator-tile"><span>交易次数</span><b>148</b></div>
+          <div class="indicator-tile"><span>盈利交易</span><b>54.8%</b></div>
+          <div class="indicator-tile"><span>平均每笔</span><b class="up">+0.22%</b></div>
+          <div class="indicator-tile"><span>平均持仓</span><b>8.7 天</b></div>
+          <div class="indicator-tile"><span>组合暴露</span><b>92%</b></div>
+          <div class="indicator-tile"><span>月均换手</span><b>18.4%</b></div>
+        </div>
         <div class="backtest-grid" style="margin-top:12px">
           <div class="panel">
-            <div class="panel-head"><h3>策略收益与沪深300</h3><span>悬浮 K 线查看持仓与下一交易日信号</span></div>
-            <div class="portfolio-chart-shell">
-              <div class="portfolio-hover-card" id="portfolio-hover">
-                <h4>2026-06-03 收盘</h4>
-                <p><b>当日收盘持仓：</b>贵州茅台、中国平安、招商银行、宁德时代、隆基绿能</p>
-                <p><b>下一交易日信号：</b>买入美的集团，卖出隆基绿能，保留其余持仓</p>
+            <div class="panel-head"><h3>TradingView K 线与策略曲线</h3><span>滚轮缩放 · 可视区数据按需补齐</span></div>
+            <div class="portfolio-chart-grid">
+              <div>
+                <div class="tradingview-chart" id="tradingview-chart" data-component="TradingView Lightweight Charts" data-strategy-start="2026-05-28">
+                  <div class="tradingview-fallback">
+                    <div>
+                      <b>TradingView Lightweight Charts</b>
+                      <span>标准 K 线组件接入点；加载失败时仅展示契约，不回退为自绘 K 线。</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="tv-contract">
+                  <div><span>组件</span><b>TradingView Lightweight Charts</b></div>
+                  <div><span>策略启动</span><b>2026-05-28</b></div>
+                  <div><span>当前可视区</span><b id="portfolio-visible-range">2026-05-28 至 2026-06-08</b></div>
+                  <div><span>加载状态</span><b id="portfolio-load-state">等待图表初始化</b></div>
+                </div>
               </div>
-              <div class="chart">
-              <svg viewBox="0 0 720 260" preserveAspectRatio="none">
-                <line x1="0" y1="220" x2="720" y2="220" stroke="#ded7ca"/>
-                <line x1="0" y1="160" x2="720" y2="160" stroke="#ded7ca"/>
-                <line x1="0" y1="100" x2="720" y2="100" stroke="#ded7ca"/>
-                <g opacity=".82">
-                  <line x1="70" y1="166" x2="70" y2="218" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="60" y="178" width="20" height="36" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-05-28" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="保留前五持仓，无新增买卖"/>
-                  <line x1="150" y1="142" x2="150" y2="196" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="140" y="154" width="20" height="34" rx="2" fill="#f2d9d6" stroke="#c9473f" data-date="2026-05-29" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="观察立讯精密，未进入目标持仓"/>
-                  <line x1="230" y1="132" x2="230" y2="188" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="220" y="144" width="20" height="38" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-02" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="买入美的集团待确认，隆基绿能接近卖出边界"/>
-                  <line x1="310" y1="112" x2="310" y2="172" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="300" y="124" width="20" height="44" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-03" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、隆基绿能" data-signal="买入美的集团，卖出隆基绿能，保留其余持仓"/>
-                  <line x1="390" y1="104" x2="390" y2="160" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="380" y="118" width="20" height="38" rx="2" fill="#f2d9d6" stroke="#c9473f" data-date="2026-06-04" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、美的集团" data-signal="保留 Top5，观察立讯精密"/>
-                  <line x1="470" y1="92" x2="470" y2="150" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="460" y="102" width="20" height="40" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-05" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、美的集团" data-signal="无卖出，缓冲区稳定"/>
-                  <line x1="550" y1="84" x2="550" y2="142" stroke="#7f8a86" stroke-width="2"/>
-                  <rect class="hover-day" x="540" y="96" width="20" height="36" rx="2" fill="#d8e6df" stroke="#198f63" data-date="2026-06-06" data-holdings="贵州茅台、中国平安、招商银行、宁德时代、美的集团" data-signal="下一交易日继续保留，等待 9:00 信号批次"/>
-                </g>
-                <path d="M0 215 C50 210 85 185 125 192 S205 162 260 170 S360 112 414 120 S510 76 572 84 S642 56 720 38" fill="none" stroke="#2369b3" stroke-width="4"/>
-                <path d="M0 214 C74 218 120 198 170 204 S270 176 342 188 S460 140 520 152 S626 124 720 132" fill="none" stroke="#8a938e" stroke-width="3"/>
-              </svg>
+              <div class="portfolio-day-panel" id="portfolio-day-panel">
+                <h4 id="portfolio-day-date">2026-06-03 收盘</h4>
+                <div>
+                  <p><b>当日收盘持仓</b></p>
+                  <p id="portfolio-day-holdings">贵州茅台、中国平安、招商银行、宁德时代、隆基绿能</p>
+                </div>
+                <div>
+                  <p><b>下一交易日调仓信号</b></p>
+                  <p id="portfolio-day-signal">买入美的集团，卖出隆基绿能，保留其余持仓。</p>
+                </div>
+                <div>
+                  <p><b>提示逻辑</b></p>
+                  <p>鼠标悬浮 K 线时，详情固定展示在图表外空余区域，避免遮挡 K 线。</p>
+                </div>
               </div>
             </div>
           </div>
@@ -1423,6 +1620,47 @@
           <div class="panel metric"><div class="label">今日买入候选</div><div class="value"><b>2</b><span>只</span></div><div class="hint">进入 Top5 且可交易</div></div>
           <div class="panel metric"><div class="label">保留持仓</div><div class="value"><b>3</b><span>只</span></div><div class="hint">仍在 Top15 缓冲</div></div>
           <div class="panel metric"><div class="label">卖出候选</div><div class="value"><b>1</b><span>只</span></div><div class="hint">跌出 Top15</div></div>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <div class="panel-head">
+            <h3>实时行情与信号提醒</h3>
+            <span>TDX 实时行情 · 固定 15 秒轮询</span>
+          </div>
+          <div class="panel-body">
+            <div class="signal-alert" id="live-signal-alert">
+              <b>触发信号：宁德时代进入买入区间</b>
+              <span>最新价位于 198.20 - 202.60，流动性过滤通过；手动下单前仍需确认涨跌停、停牌和账户权限。</span>
+            </div>
+            <div class="quote-status" style="margin-top:10px">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="quote-poll-status">开盘时段按合规频率拉取选股列表行情</span>
+              <b id="quote-refresh-time">09:30:15</b>
+              <span id="quote-throttle-state">无超频风险</span>
+            </div>
+            <div class="quote-grid" id="quote-grid" style="margin-top:10px">
+              <div class="quote-card" data-quote-code="300750.SZ" data-base="200.40">
+                <span>宁德时代 · 买入候选</span>
+                <b>200.40</b>
+                <span>买入区间 198.20 - 202.60</span>
+              </div>
+              <div class="quote-card" data-quote-code="600519.SH" data-base="1305.20">
+                <span>贵州茅台 · 保留</span>
+                <b>1305.20</b>
+                <span>保留区间 1298.40 - 1312.80</span>
+              </div>
+              <div class="quote-card" data-quote-code="000333.SZ" data-base="64.10">
+                <span>美的集团 · 买入候选</span>
+                <b>64.10</b>
+                <span>买入区间 63.40 - 64.80</span>
+              </div>
+              <div class="quote-card" data-quote-code="601012.SH" data-base="18.42">
+                <span>隆基绿能 · 卖出候选</span>
+                <b>18.42</b>
+                <span>卖出区间 18.20 - 18.80</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="panel" style="margin-top:12px">
@@ -1520,13 +1758,14 @@
     </aside>
   </div>
 
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
   <script>
     const pageMeta = {
       dashboard: ['策略总览', '2026-06-08 09:00 信号批次 · Tushare 日频 + TDX 1m/5m/盘口派生特征'],
-      'factor-list': ['因子列表', '因子名称、分类、LaTeX 公式、业务含义与评测指标'],
+      'factor-list': ['因子列表', '因子名称、分类、公式、业务含义与评测指标'],
       strategy: ['策略配置', 'TopN、缓冲区、股票池过滤和 V1 等权因子框架'],
-      portfolio: ['Portfolio', '回测与实盘组合指标、策略收益曲线和沪深300 K 线'],
-      signals: ['今日选股', '当日选股结果、持仓个股、全量标的综合得分和个股详情']
+      portfolio: ['Portfolio', 'TradingView K 线、组合指标、可视区数据加载和交易日信号'],
+      signals: ['今日选股', '实时行情、信号提醒、全量标的综合得分和个股详情']
     };
 
     const factorEvalData = {
@@ -1717,9 +1956,219 @@
       }
     };
 
+    const portfolioDays = [
+      {
+        time: '2026-05-28',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、隆基绿能',
+        signal: '保留前五持仓，无新增买卖。'
+      },
+      {
+        time: '2026-05-29',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、隆基绿能',
+        signal: '观察立讯精密，未进入目标持仓。'
+      },
+      {
+        time: '2026-06-02',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、隆基绿能',
+        signal: '买入美的集团待确认，隆基绿能接近卖出边界。'
+      },
+      {
+        time: '2026-06-03',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、隆基绿能',
+        signal: '买入美的集团，卖出隆基绿能，保留其余持仓。'
+      },
+      {
+        time: '2026-06-04',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、美的集团',
+        signal: '保留 Top5，观察立讯精密。'
+      },
+      {
+        time: '2026-06-05',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、美的集团',
+        signal: '无卖出，缓冲区稳定。'
+      },
+      {
+        time: '2026-06-08',
+        holdings: '贵州茅台、中国平安、招商银行、宁德时代、美的集团',
+        signal: '下一交易日继续保留，等待 9:00 信号批次。'
+      }
+    ];
+
+    const csi300Bars = [
+      { time: '2026-05-28', open: 3890, high: 3922, low: 3868, close: 3911 },
+      { time: '2026-05-29', open: 3911, high: 3928, low: 3882, close: 3896 },
+      { time: '2026-06-02', open: 3898, high: 3940, low: 3888, close: 3932 },
+      { time: '2026-06-03', open: 3935, high: 3978, low: 3920, close: 3972 },
+      { time: '2026-06-04', open: 3974, high: 3988, low: 3946, close: 3958 },
+      { time: '2026-06-05', open: 3960, high: 4008, low: 3952, close: 4002 },
+      { time: '2026-06-08', open: 4004, high: 4026, low: 3988, close: 4018 }
+    ];
+
+    const strategyLine = [
+      { time: '2026-05-28', value: 1.000 },
+      { time: '2026-05-29', value: 1.006 },
+      { time: '2026-06-02', value: 1.012 },
+      { time: '2026-06-03', value: 1.026 },
+      { time: '2026-06-04', value: 1.022 },
+      { time: '2026-06-05', value: 1.034 },
+      { time: '2026-06-08', value: 1.041 }
+    ];
+
+    const nextBars = [
+      { time: '2026-06-09', open: 4018, high: 4040, low: 4004, close: 4032 },
+      { time: '2026-06-10', open: 4030, high: 4046, low: 3998, close: 4008 }
+    ];
+
+    const nextStrategyLine = [
+      { time: '2026-06-09', value: 1.047 },
+      { time: '2026-06-10', value: 1.043 }
+    ];
+
     const setText = (id, value) => {
       const element = document.getElementById(id);
       if (element) element.textContent = value;
+    };
+
+    const formatChartTime = time => {
+      if (typeof time === 'string') return time;
+      if (time && typeof time === 'object') {
+        return `${time.year}-${String(time.month).padStart(2, '0')}-${String(time.day).padStart(2, '0')}`;
+      }
+      return '';
+    };
+
+    const renderPortfolioDay = day => {
+      if (!day) return;
+      setText('portfolio-day-date', `${day.time} 收盘`);
+      setText('portfolio-day-holdings', day.holdings);
+      setText('portfolio-day-signal', day.signal);
+    };
+
+    let portfolioChartInitialized = false;
+    const initTradingViewChart = () => {
+      renderPortfolioDay(portfolioDays[3]);
+      const container = document.getElementById('tradingview-chart');
+      if (!container) return;
+      if (portfolioChartInitialized) return;
+      if (!window.LightweightCharts) {
+        setText('portfolio-load-state', 'TradingView 组件未加载，等待真实前端包接入');
+        return;
+      }
+
+      portfolioChartInitialized = true;
+      container.querySelector('.tradingview-fallback')?.remove();
+      const chart = window.LightweightCharts.createChart(container, {
+        width: container.clientWidth,
+        height: container.clientHeight,
+        layout: {
+          background: { color: '#10161c' },
+          textColor: '#aeb9b6'
+        },
+        grid: {
+          vertLines: { color: 'rgba(255,255,255,.06)' },
+          horzLines: { color: 'rgba(255,255,255,.06)' }
+        },
+        rightPriceScale: { borderColor: 'rgba(255,255,255,.16)' },
+        timeScale: {
+          borderColor: 'rgba(255,255,255,.16)',
+          rightOffset: 2,
+          fixLeftEdge: true
+        },
+        handleScroll: {
+          mouseWheel: true,
+          pressedMouseMove: true
+        },
+        handleScale: {
+          axisPressedMouseMove: true,
+          mouseWheel: true,
+          pinch: true
+        },
+        crosshair: {
+          mode: window.LightweightCharts.CrosshairMode?.Normal ?? 0
+        }
+      });
+      const candleSeries = chart.addSeries && window.LightweightCharts.CandlestickSeries
+        ? chart.addSeries(window.LightweightCharts.CandlestickSeries, {
+          upColor: '#198f63',
+          downColor: '#c9473f',
+          borderVisible: false,
+          wickUpColor: '#198f63',
+          wickDownColor: '#c9473f'
+        })
+        : chart.addCandlestickSeries({
+          upColor: '#198f63',
+          downColor: '#c9473f',
+          borderVisible: false,
+          wickUpColor: '#198f63',
+          wickDownColor: '#c9473f'
+        });
+      const equitySeries = chart.addSeries && window.LightweightCharts.LineSeries
+        ? chart.addSeries(window.LightweightCharts.LineSeries, {
+          color: '#6fb2ff',
+          lineWidth: 2,
+          priceScaleId: 'left'
+        })
+        : chart.addLineSeries({
+          color: '#6fb2ff',
+          lineWidth: 2,
+          priceScaleId: 'left'
+        });
+
+      let bars = csi300Bars.slice();
+      let equity = strategyLine.slice();
+      let loadedRight = false;
+      candleSeries.setData(bars);
+      equitySeries.setData(equity);
+      chart.timeScale().fitContent();
+      setText('portfolio-load-state', '已加载策略启动后的完整可视区');
+
+      chart.timeScale().subscribeVisibleLogicalRangeChange(range => {
+        if (!range) return;
+        const fromIndex = Math.max(0, Math.floor(range.from));
+        const toIndex = Math.min(bars.length - 1, Math.ceil(range.to));
+        if (bars[fromIndex] && bars[toIndex]) {
+          setText('portfolio-visible-range', `${bars[fromIndex].time} 至 ${bars[toIndex].time}`);
+        }
+        if (range.from <= 0) {
+          setText('portfolio-load-state', '左侧已到策略启动日 2026-05-28');
+        }
+        if (range.to >= bars.length - 2 && !loadedRight) {
+          loadedRight = true;
+          bars = bars.concat(nextBars);
+          equity = equity.concat(nextStrategyLine);
+          candleSeries.setData(bars);
+          equitySeries.setData(equity);
+          setText('portfolio-load-state', '已按可视区动态补齐后续行情');
+        }
+      });
+
+      chart.subscribeCrosshairMove(param => {
+        const time = formatChartTime(param?.time);
+        const day = portfolioDays.find(item => item.time === time);
+        if (day) renderPortfolioDay(day);
+      });
+      window.addEventListener('resize', () => {
+        chart.resize(container.clientWidth, container.clientHeight);
+      });
+    };
+
+    const renderRealtimeQuotes = () => {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const phase = Math.floor(seconds / 15);
+      document.querySelectorAll('[data-quote-code]').forEach((card, index) => {
+        const base = Number(card.dataset.base);
+        const drift = ((phase + index) % 3 - 1) * 0.12;
+        const price = base + drift;
+        card.querySelector('b').textContent = price.toFixed(base > 100 ? 2 : 2);
+      });
+      setText('quote-refresh-time', now.toLocaleTimeString('zh-CN', { hour12: false }));
+      setText('quote-poll-status', '开盘时段按合规频率拉取选股列表行情');
+      setText('quote-throttle-state', '15 秒固定频率 · 无超频风险');
+      const alert = document.getElementById('live-signal-alert');
+      if (alert) {
+        alert.querySelector('b').textContent = '触发信号：宁德时代进入买入区间';
+      }
     };
 
     document.querySelectorAll('.nav button').forEach(button => {
@@ -1731,6 +2180,9 @@
         const meta = pageMeta[button.dataset.page];
         document.getElementById('page-title').textContent = meta[0];
         document.getElementById('page-subtitle').textContent = meta[1];
+        if (button.dataset.page === 'portfolio') {
+          window.requestAnimationFrame(initTradingViewChart);
+        }
       });
     });
 
@@ -1800,15 +2252,9 @@
       });
     });
 
-    document.querySelectorAll('.hover-day').forEach(day => {
-      day.addEventListener('mouseenter', () => {
-        document.getElementById('portfolio-hover').innerHTML = `
-          <h4>${day.dataset.date} 收盘</h4>
-          <p><b>当日收盘持仓：</b>${day.dataset.holdings}</p>
-          <p><b>下一交易日信号：</b>${day.dataset.signal}</p>
-        `;
-      });
-    });
+    renderPortfolioDay(portfolioDays[3]);
+    renderRealtimeQuotes();
+    window.setInterval(renderRealtimeQuotes, 15000);
 
     document.querySelectorAll('.eval-btn').forEach(button => {
       button.addEventListener('click', () => {
