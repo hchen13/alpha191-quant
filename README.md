@@ -30,6 +30,20 @@ The system specification assumes the following data interface capabilities are a
 - Fetch large historical datasets through `offset` and `limit` pagination.
 - Query thousands of symbols for the same trading day in one batch request.
 
+## Storage Strategy
+
+Full-market quote data is storage-heavy, so V1 prioritizes storage efficiency over millisecond-level read/write differences.
+
+The default storage plan is:
+
+- Encode prices as scaled integers: `price_int = round(price * 100)`.
+- Restore prices at read time with `price = price_int / 100`.
+- Prefer compact integer types for prices, returns, volumes, amounts, and symbol identifiers.
+- Store normalized market data as compressed columnar files with Parquet + ZSTD.
+- Use DuckDB as the local query layer.
+- Benchmark compressed file storage against database persistence.
+- Switch to database persistence only if the database option is better on both storage footprint and read performance.
+
 ## V1 Strategy Shape
 
 The strategy workflow is:

@@ -813,10 +813,10 @@
 
       <section id="data">
         <h3>数据底座设计</h3>
-        <p>接口联调与能力核验已完成。全市场 5000+ 股票不能每天重复拉取全历史 K 线；系统必须区分首次 bootstrap、每日增量更新、缓存命中、分页拉取和数据质量校验。</p>
+        <p>接口联调与能力核验已完成。全市场 5000+ 股票的行情数据体量庞大，数据底座必须优先优化存储空间；毫秒级读写耗时增加可以接受。系统必须区分首次 bootstrap、每日增量更新、缓存命中、分页拉取、压缩存储和数据质量校验。</p>
         <div class="flow">
           <div class="step"><span class="num">1</span><b>confirmed adapters</b><span>接口已支持单标的指定时段、多标的单日批量、offset + limit 分页。</span></div>
-          <div class="step"><span class="num">2</span><b>bootstrap</b><span>首次拉取历史日线、复权、基础信息和必要分钟窗口，写入本地 raw cache。</span></div>
+          <div class="step"><span class="num">2</span><b>compact encoding</b><span>价格、涨跌幅和标的代码先做精简编码，再写入本地存储。</span></div>
           <div class="step"><span class="num">3</span><b>daily incremental</b><span>每日只补缺失交易日和变更字段，优先走多标的单日批量。</span></div>
           <div class="step"><span class="num">4</span><b>normalize</b><span>字段、单位、主键、市场代码、复权口径统一。</span></div>
           <div class="step"><span class="num">5</span><b>factor mart</b><span>量价、基本面、盘口快照派生日频因子宽表。</span></div>
@@ -827,7 +827,7 @@
             <h4>缓存与增量规则</h4>
             <ul>
               <li>原始接口返回按 <code>provider/api_name/date</code> 分区保存，便于复现和排查。</li>
-              <li>标准化数据落 DuckDB/Parquet，本地查询不反复打外部接口。</li>
+              <li>标准化数据默认落压缩 Parquet，本地查询通过 DuckDB 读取，不反复打外部接口。</li>
               <li>每日任务先查本地最大 <code>trade_date</code>，只拉缺失交易日。</li>
               <li>当日或昨日行情优先使用多标的单日批量查询；长周期历史数据使用单标的分页查询。</li>
             </ul>
@@ -842,6 +842,39 @@
               <li>多标的单日查询：支持传入数千个标的代码，统一获取同一交易日行情数据。</li>
             </ul>
           </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="panel">
+            <h4>V1 存储选型</h4>
+            <ul>
+              <li>默认采用压缩列式文件：Parquet + ZSTD，按 <code>dataset/freq/trade_date</code> 分区。</li>
+              <li>DuckDB 作为查询和回测读取层，不把它默认当作唯一持久化数据库。</li>
+              <li>必须基准对比压缩文件存储与数据库存储的空间占用、读取耗时和写入耗时。</li>
+              <li>若数据库方案在存储空间和读取速度综合表现最优，则切换为数据库持久化。</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h4>精简数值编码</h4>
+            <ul>
+              <li>A 股价格字段按两位小数存储为整数：<code>price_int = round(price * 100)</code>，使用时除以 100 还原。</li>
+              <li><code>open/high/low/close/pre_close</code> 等价格字段优先使用 <code>int32</code>。</li>
+              <li>涨跌幅、收益率等比例字段优先存基点或万分位整数，避免 float64 膨胀。</li>
+              <li><code>ts_code</code> 建立字典映射为 <code>symbol_id</code>，核心行情表不重复保存长字符串。</li>
+              <li>成交量、成交额保留明确单位，优先使用能覆盖范围的最小整数类型。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-scroll" style="margin-top:16px">
+          <table class="criteria-table">
+            <thead>
+              <tr><th>方案</th><th>空间策略</th><th>读取策略</th><th>采用条件</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>压缩文件存储</td><td>Parquet + ZSTD + 分区 + 整数编码。</td><td>DuckDB / Polars 按列读取，毫秒级额外解压耗时可接受。</td><td>默认 V1 方案；空间压缩效果优先。</td></tr>
+              <tr><td>数据库存储</td><td>以数据库页压缩、列存或专用时间序列压缩为准。</td><td>通过索引或列存加速按日期、按标的、按窗口查询。</td><td>基准测试证明空间和读取速度综合优于压缩文件时采用。</td></tr>
+              <tr><td>未压缩明细文件</td><td>不做压缩，仅便于调试。</td><td>直接读取。</td><td>仅允许小样本调试，不得作为全量行情持久化方案。</td></tr>
+            </tbody>
+          </table>
         </div>
         <div class="table-scroll" style="margin-top:16px">
           <table class="source-table">
@@ -1058,8 +1091,8 @@
           </div>
           <div class="milestone">
             <div class="phase">M2</div>
-            <div><h4>数据仓库与增量缓存</h4><p>落地 raw/staging/core/factor/mart 分层，完成 bootstrap、daily incremental、缓存命中和分页拉取。</p></div>
-            <ul><li>Parquet + DuckDB</li><li>主键校验</li><li>TDX 聚合日线对账</li><li>多标的单日批量</li></ul>
+            <div><h4>数据仓库与压缩缓存</h4><p>落地 raw/staging/core/factor/mart 分层，完成精简数值编码、压缩列式存储、daily incremental、缓存命中和分页拉取。</p></div>
+            <ul><li>Parquet + ZSTD + DuckDB</li><li>存储基准测试</li><li>主键校验</li><li>多标的单日批量</li></ul>
           </div>
           <div class="milestone">
             <div class="phase">M3</div>
@@ -1095,6 +1128,9 @@
               <li>全市场历史数据只在 bootstrap 阶段拉取，日常任务只做增量更新。</li>
               <li>当日/昨日行情使用多标的单日批量查询；长周期历史 K 线使用单标的分页查询。</li>
               <li>offset + limit 分页必须能断点续跑，并记录每批拉取状态。</li>
+              <li>价格字段必须按两位小数整数化存储，读取时除以 100 还原。</li>
+              <li>必须输出压缩文件存储与数据库存储的空间、读取、写入基准对比。</li>
+              <li>默认全量行情持久化不得使用未压缩明细文件。</li>
               <li>TDX 1m/5m 聚合日线能与 Tushare daily 对账。</li>
               <li>东财接口统一节流，失败输出 source unavailable，不伪装为空结果。</li>
               <li>Tushare token 只从环境或配置读取，日志中永不显示。</li>
@@ -1157,6 +1193,9 @@
 - 数据源主口径必须保留 source、freshness、unit、raw/staging/core 分层。
 - 不得每天重复拉全市场历史 K 线；必须实现 bootstrap、daily incremental、本地缓存和 offset + limit 分页。
 - 接口能力已确认：单标的指定时段、单标的 1m K 线、单标的 500/1000 天日 K、多标的单日行情批量。
+- 数据存储优先优化空间：价格字段按 price_int=round(price*100) 整数化，读取时除以 100 还原。
+- 默认使用 Parquet + ZSTD 压缩列式文件和 DuckDB 查询层；必须与数据库存储做空间、读取、写入基准对比。
+- 若数据库在存储空间和读取速度综合表现最优，则改用数据库持久化。
 - Tushare 为日频主源；TDX sidecar 为日内主源；腾讯/东财只做辅助和 fallback。
 - 首批只实现文档列出的 10 个 Alpha191 简单因子，并作为 active 因子等权合成。
 - 因子池必须支持 candidate、watch、active、paused、retired；AI 候选因子不得绕过评价直接 active。
@@ -1166,6 +1205,7 @@
 
 停止条件：
 - fetch-symbol-bars、fetch-market-snapshot、validate-data、compute-factors、evaluate-factors、factor-pool、run-backtest、generate-signals 均可运行并有产物。
+- storage-benchmark 可运行，并输出压缩文件存储 vs 数据库存储对比报告。
 - pytest 通过；如有前端构建，前端构建通过；UI 页面可本地打开并展示真实数据或明确的空状态。
 - 回测报告包含夏普比率、累计收益曲线、最大回撤、交易频次、平均持仓天数、换手和交易明细。
 - 每日信号报告包含标的、综合分、买入/卖出/保留/跳过建议、成交区间、取消条件、持有期、因子解释和数据源口径。
